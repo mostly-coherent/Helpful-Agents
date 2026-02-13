@@ -1,3 +1,8 @@
+---
+name: extract-page-shallow
+description: Extract complete content from a single webpage and its direct links only (depth 0 + depth 1). Does NOT recursively follow links beyond the first level. Use when you need focused extraction without deep crawling. Use when user requests extracting a webpage and its immediate linked pages, shallow extraction, or wants to avoid deep recursive crawling.
+---
+
 # Extract Page Shallow
 
 Extract complete content from a single webpage and its direct links only (depth 0 + depth 1). Does NOT recursively follow links beyond the first level. Use when you need focused extraction without deep crawling.
@@ -11,27 +16,42 @@ Use this skill when:
 - User wants to avoid deep recursive crawling
 
 **Do NOT use when:**
-- User needs deep recursive extraction (use extract-webpage-content instead)
+- User needs deep recursive extraction (use `extract-webpage-content` instead)
 - User wants to browse or navigate pages manually
+
+## Related Skills
+
+| Skill | Relationship |
+|-------|-------------|
+| `extract-webpage-content` | Use instead for deeper extraction (depth 0 + 1 + 2) or sitemap-based extraction |
+| `extract-sitemap` | Use first to preview site structure before deciding extraction depth |
 
 ## Execution Model
 
 **Execute autonomously** - Complete the entire workflow without user approval for each action.
 
-**Required tools:** Playwright MCP (`user-playwright`)
+**CRITICAL - NO CONFIRMATION REQUESTS:**
+- NEVER ask "Should I continue?" or for approval between pages
+- ALWAYS continue until all direct links are extracted
+- ONLY report progress updates, never ask for permission
+
+**Required tools:** Playwright MCP (`user-playwright`) - does NOT require per-action approval
+**Do NOT use:** cursor-ide-browser MCP - requires per-action approval (not suitable)
 
 ## Scope
 
-**Depth 0:** Starting page (the URL provided by user)
-**Depth 1:** Direct links found on the starting page
-**Depth 2+:** NOT EXTRACTED (this is the key difference from extract-webpage-content)
+| Depth | What | Extracted? |
+|-------|------|-----------|
+| 0 | Starting page (user-provided URL) | Yes |
+| 1 | Direct links found on starting page | Yes |
+| 2+ | Links from depth 1 pages | **NO** (key difference from extract-webpage-content) |
 
 ## Workflow
 
 1. **Navigate to starting page** (Depth 0)
    - Clean up Chrome processes: `pkill -f "mcp-chrome-" && sleep 2`
    - Navigate to target URL
-   - Expand all dynamic content (accordions, tabs, etc.)
+   - Expand all dynamic content (accordions, tabs, etc.) — see `references/REFERENCE.md`
 
 2. **Extract starting page content** (Depth 0)
    - Extract all text content (headings, paragraphs, lists)
@@ -45,62 +65,32 @@ Use this skill when:
      - Expand dynamic content
      - Extract text content
      - Capture screenshot if needed
-     - Save to subfolder: `[Page_Title]/[Linked_Page_Title]/[Linked_Page_Title]_Full_Content.md`
-   - **DO NOT extract links from these depth 1 pages** (no depth 2)
+     - Save to: `[Page_Title]/[Linked_Page_Title]/[Linked_Page_Title]_Full_Content.md`
+   - **DO NOT extract links from depth 1 pages** (no depth 2)
 
-4. **Progress tracking**
-   - Report: "Extracted depth 0: [starting page]"
-   - Report: "Extracting depth 1: [X] direct links found"
-   - Report progress every 5-10 pages
+4. **Progress tracking** - Report every 5-10 pages
 
-5. **Save output**
-   - Markdown files in nested folder structure
-   - Images saved alongside markdown files
-   - No state file needed (small scope, runs quickly)
+5. **Completion verification** - Verify all gates pass before reporting done
+
+6. **Save output** - Markdown files in nested folder structure, images alongside
 
 ## Output Format
 
 **Directory Structure:**
 ```
 [Page_Title]/
-├── [Page_Title]_Full_Content.md
-├── [page-title]-image-1.png
-├── [Linked_Page_1]/
-│   └── [Linked_Page_1]_Full_Content.md
-├── [Linked_Page_2]/
-│   └── [Linked_Page_2]_Full_Content.md
-└── ...
+  [Page_Title]_Full_Content.md
+  [page-title]-image-1.png
+  [Linked_Page_1]/
+    [Linked_Page_1]_Full_Content.md
+  [Linked_Page_2]/
+    [Linked_Page_2]_Full_Content.md
 ```
 
 **Markdown Format:**
 - Images inserted at position in content flow
-- Images saved as files in same folder
+- Images saved as files in same folder (NO `screenshots/` subfolder)
 - Document references: `![alt](filename.png)` (relative path)
-
-## Key Differences from extract-webpage-content
-
-| Feature | extract-page-shallow | extract-webpage-content |
-|---------|---------------------|-------------------------|
-| **Depth** | Depth 0 + 1 only | Depth 0 + 1 + 2 |
-| **Link following** | Direct links only | Links + links-from-links |
-| **State persistence** | Not needed (quick) | Required (long-running) |
-| **Use case** | Focused extraction | Comprehensive site crawl |
-| **Completion time** | Minutes | Hours (potentially) |
-
-## Error Handling
-
-**Navigation errors:**
-- Retry up to 3 times
-- Mark page as error, continue with next page
-- DO NOT stop entire extraction
-
-**Authentication required:**
-- Log warning: "Page requires authentication"
-- Skip page, continue with remaining pages
-
-**404/403/500 errors:**
-- Log error with status code
-- Skip page, continue with remaining pages
 
 ## Requirements
 
@@ -111,13 +101,35 @@ Use this skill when:
 5. **Structured output** - Nested folders with descriptive names
 6. **Progress reporting** - Log every 5-10 pages
 
-## Completion Criteria
+## Error Recovery
 
-Work is complete when:
-1. ✅ Starting page (depth 0) extracted
-2. ✅ All direct links (depth 1) extracted or marked as error
-3. ✅ All output files created and non-empty
-4. ✅ NO depth 2 pages extracted
+**NEVER stop processing due to errors. Always continue with next page.**
+
+| Error | Action |
+|-------|--------|
+| "Failed to launch browser" | `pkill -f "mcp-chrome-" && sleep 2`, retry up to 3 times |
+| Navigation timeout | Mark as error, continue with next page |
+| 404/403/500 | Log error, skip page, continue |
+| Authentication required | Log warning, skip page, continue |
+
+## Completion Gates
+
+**ALL gates must pass before reporting work complete.**
+
+| Gate | Checks | If fails |
+|------|--------|----------|
+| Gate 1: Depth 0 | Starting page extracted successfully | Re-extract starting page |
+| Gate 2: Depth 1 | All direct links extracted or marked as error | Extract remaining links |
+| Gate 3: Output | All extracted pages have output files | Generate missing files |
+| Gate 4: No depth 2 | Zero depth 2 pages extracted | Remove any depth 2 extractions |
+
+**Completion criteria (ALL must be true):**
+1. Starting page extracted
+2. All direct links processed (extracted or error)
+3. All output files exist and are non-empty
+4. NO depth 2 pages extracted
+
+**No state persistence needed** — this skill runs quickly (minutes, not hours). If interrupted, start fresh.
 
 ## Example Usage
 
@@ -130,10 +142,12 @@ Work is complete when:
 4. **STOPS** - does not follow links from those 15 pages
 5. Reports: "Extracted 1 page at depth 0, 15 pages at depth 1. Total: 16 pages."
 
-## Technical Implementation
+## Detailed Reference
 
-See [REFERENCE.md](REFERENCE.md) for:
-- Complete extraction algorithm
+See `references/REFERENCE.md` for:
+- Complete extraction algorithm pseudocode
 - Dynamic content expansion logic
 - Link filtering and normalization
-- Error recovery procedures
+- Content extraction and markdown formatting
+- Error recovery with exponential backoff
+- Completion verification implementation

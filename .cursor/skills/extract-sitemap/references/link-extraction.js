@@ -1,5 +1,6 @@
 // Link extraction script for browser_evaluate
 // Extracts all internal links from the current page
+// CANONICAL VERSION — shared between extract-webpage-content and extract-sitemap
 
 async () => {
   const links = Array.from(document.querySelectorAll('a[href]'));
