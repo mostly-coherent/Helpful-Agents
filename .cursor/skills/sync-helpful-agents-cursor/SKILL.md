@@ -31,6 +31,7 @@ Use this skill when:
 
 - `.DS_Store` files (macOS metadata)
 - Temporary files
+- `git-sync/` skill (contains PII — a separate PII-free public version is maintained directly in Helpful Agents)
 
 ## Execution Flow
 
@@ -66,7 +67,7 @@ Use this skill when:
 **Command:**
 
 ```bash
-rsync -av --delete --exclude='.DS_Store' \
+rsync -av --delete --exclude='.DS_Store' --exclude='git-sync/' \
   ".cursor/skills/" \
   "Helpful Agents/.cursor/skills/"
 ```
@@ -77,13 +78,15 @@ rsync -av --delete --exclude='.DS_Store' \
 - `-v`: Verbose (shows what's being transferred)
 - `--delete`: Remove files in destination that don't exist in source (true mirror)
 - `--exclude='.DS_Store'`: Skip macOS metadata files
+- `--exclude='git-sync/'`: Skip git-sync skill (contains PII; public version maintained separately)
 
 **What this does:**
 
-- Copies all skill folders and their contents
+- Copies all skill folders and their contents (except git-sync/)
 - Mirrors directory structure exactly
 - Removes any skills in Helpful Agents that were deleted from workspace
 - Preserves all subdirectories (references/, scripts/, assets/)
+- Leaves `Helpful Agents/.cursor/skills/git-sync/` untouched (PII-free public version)
 
 ### Phase 3: Sync Commands
 
@@ -267,6 +270,17 @@ Solutions:
 | ✅ Commands (.md)    | Yes     | Command definitions       |
 | ❌ .DS_Store         | No      | macOS metadata (excluded) |
 | ❌ Temp files        | No      | Not tracked in source     |
+| ❌ git-sync/         | No      | Contains PII; public version maintained separately in Helpful Agents |
+
+### PII-Excluded Skills
+
+Some skills contain personal information (paths, emails, account names) that cannot be shared publicly. These are excluded from the rsync mirror and have a separate PII-free version maintained directly in `Helpful Agents/.cursor/skills/`.
+
+**Currently excluded:** `git-sync/`
+
+**To add more exclusions:** Add `--exclude='skill-name/'` to the rsync command in Phase 2.
+
+**Maintenance:** When updating an excluded skill's workspace version, remember to also update the public version in Helpful Agents manually.
 
 ## Integration with Git-Sync
 
