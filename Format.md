@@ -1,1 +1,0 @@
-Style normalization only—standardize heading hierarchy, typography/emphasis, numbering & bullets, spacing, tables, and layout; preserve exact wording, order, claims, and data. Absolutely no content edits.

@@ -81,7 +81,9 @@ See [REFERENCE.md](REFERENCE.md) for complete best practices and anti-patterns.
 
 ### Step 5: Create the Context Method
 
-**After confirming recommendation and verifying best practices**, proceed to create the appropriate structure:
+**After confirming recommendation and verifying best practices**, proceed to create the appropriate structure.
+
+**If converting from an existing @-mention .md file:** Delete the original .md after creating the skill/command/rule. No duplication — keep workspace tidy.
 
 #### Creating a Rule
 
@@ -497,4 +499,5 @@ For detailed checklists, see [REFERENCE.md](REFERENCE.md) section "Validation Ch
 5. Use Write tool to create files with proper formatting
 6. Use LS/Read tools to verify
 7. **Run validation checklist** - Confirm no anti-patterns
-8. Show user what was created and how to use it
+8. **If converting from @-mention .md** - Delete the original .md file (no duplication)
+9. Show user what was created and how to use it

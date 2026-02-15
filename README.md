@@ -1,217 +1,133 @@
 # Helpful Agents
 
-> Reusable AI agents for development and documentation—use them directly in Cursor with `@agent-name.md` syntax. No copy-pasting needed.
+> Reusable AI agents, skills, and commands for Cursor—development, documentation, and project scaffolding.
 
 ![Type](https://img.shields.io/badge/Type-AI%20Agents-purple)
 ![Status](https://img.shields.io/badge/Status-Active-green)
 ![Stack](https://img.shields.io/badge/Stack-Cursor%20%7C%20Claude-blue)
 
-## 🚀 Quick Start
+## What's in This Folder
 
-**These are Cursor agents—use them with `@` syntax:**
-
-```bash
-# In Cursor chat, reference the agent file directly:
-@Debug.md on this project
-@Cleanup-folder.md on Inspiration/
-@Requirement_Agent.md create a Builder Brief for [project name]
-```
-
-**That's it.** Cursor loads the agent instructions automatically. You don't need to copy-paste anything.
+| Type | Location | How to Use |
+|------|----------|------------|
+| **Skills** | `.cursor/skills/` | Auto-invoke when relevant, or mention by name (e.g. "run debug-audit on this project") |
+| **Commands** | `.cursor/commands/` | Use `/command-name` in Cursor chat |
+| **Templates** | Root `*.md` files | `@filename.md` to load as context, or copy-paste |
+| **Install script** | `install.sh` | One-time: copies skills + commands to `~/.cursor/` for all projects |
 
 ### First-Time Setup
 
-1. **Clone or download** this repo
-2. **One-time:** Run `./install.sh` to copy skills and commands to `~/.cursor/` so they work in all projects:
-   ```bash
-   git clone https://github.com/mostly-coherent/Helpful-Agents.git && cd Helpful-Agents && ./install.sh
-   ```
-3. **In Cursor**, reference agents by their file path:
-   - `@Helpful Agents/Debug.md` (if outside the folder)
-   - `@Debug.md` (if you're already in the Helpful Agents folder)
-3. **Add context** after the agent name:
-   - `@Debug.md on ./my-project`
-   - `@Cleanup-folder.md on ./Inspiration`
+```bash
+git clone https://github.com/mostly-coherent/Helpful-Agents.git
+cd Helpful-Agents
+./install.sh
+```
 
-**Example workflow:**
-```
-You: @Debug.md on ./Allegro
-Cursor: [Runs full debug audit using agent instructions]
-```
+This copies `.cursor/skills/` and `.cursor/commands/` into `~/.cursor/`, making them available in every Cursor workspace.
 
 ---
 
-<details>
-<summary>✨ Available Agents</summary>
+## Skills
 
-### 🐛 Code & Development
-- **[Debug.md](Debug.md)** — Full project audit (bugs, performance, accessibility)
-- **[ReArchitecture.md](ReArchitecture.md)** — Architecture refactoring and redesign
-- **[Layman-Explanation.md](Layman-Explanation.md)** — AI explains code changes in simple terms (7-part format)
-- **[Cleanup-folder.md](Cleanup-folder.md)** — Harmonize project docs to canonical structure
+Skills are domain-specific workflows. Cursor invokes them when your message matches their trigger terms, or you can request them explicitly.
 
-### 📄 Documentation
-- **[README-project-template.md](README-project-template.md)** — Generic project README template
-- **[README-project-refine-prompt.md](README-project-refine-prompt.md)** — Polish existing READMEs
-- **[Format.md](Format.md)** — Markdown style normalization
-- **[OptimizeDoc.md](OptimizeDoc.md)** — Lossless distillation for clarity
-- **[ReviseDoc.md](ReviseDoc.md)** — Light-touch refinement
-- **[BusinessGuide.md](BusinessGuide.md)** — Technical → business-friendly translation
+### Code & Development
 
+| Skill | Purpose | When to Use |
+|-------|---------|-------------|
+| **debug-audit** | Full project audit: bugs, performance, accessibility | "audit this project", "find bugs", "check accessibility" |
+| **codefix** | Code review for bugs, race conditions, error handling, UAT readiness | "review this code", "check for bugs", "prep for UAT" |
+| **rearchitecture** | Document component boundaries and architecture patterns | "document architecture", "update ARCHITECTURE.md" |
+| **create-project** | Scaffold new Next.js project with docs and git | "create a new project", "scaffold project called X" |
+| **app-password-auth** | Add password-gated auth with idle timeout to Next.js apps | "add password protection", "auth gating" |
+| **generate-server-scripts** | Generate start/stop/check scripts for multi-service projects | "generate server scripts", "start stop scripts" |
 
-### 📝 Requirements & Planning
-- **[Requirement_Agent.md](Requirement_Agent.md)** — Create or update PRDs and Builder Briefs
-- **[Critique_Agent.md](Critique_Agent.md)** — Structured feedback on requirements
-- **[Builder_Template.md](Builder_Template.md)** — Lightweight prototype-driven briefs
-- **[PRD_Template.md](PRD_Template.md)** — Comprehensive requirements template
+### Documentation
 
-- **[ListQuestions.md](ListQuestions.md)** — Extract open questions from docs
-- **[ListConflicts.md](ListConflicts.md)** — Extract conflicting facts
+| Skill | Purpose | When to Use |
+|-------|---------|-------------|
+| **cleanup-docs** | Harmonize scattered .md files to canonical 6-file structure | "cleanup docs", "harmonize documentation" |
+| **upgrade-canonical-docs** | Standardize doc names and formats to latest templates | "upgrade canonical docs", "standardize doc format" |
+| **business-guide** | Translate technical content to business-friendly language | "translate for stakeholders", "explain in non-technical terms" |
+| **requirement-agent** | Create or update PRDs and Builder Briefs | "create PRD", "Builder Brief", "requirements document" |
+| **critique-requirements** | Structured feedback on requirements docs | "critique requirements", "review PRD" |
 
-### 🚀 DevOps & Infrastructure
-- **[Server_Scripts/Generate-server-scripts.md](Server_Scripts/Generate-server-scripts.md)** — Generate start/stop/check scripts for multi-service projects
-- **[GitSync.md](GitSync.md)** — Safe git sync workflow
+### Web Extraction
 
-### 🔒 Security & Privacy
-- **[Workspace_Privacy_Optimization.md](Workspace_Privacy_Optimization.md)** — Prep workspace for GitHub sharing
-- **[Privacy-Security.md](Privacy-Security.md)** — Privacy and security best practices
+| Skill | Purpose | When to Use |
+|-------|---------|-------------|
+| **extract-webpage-content** | Extract all content from internal pages (text, images, accordions) | "extract webpage", "archive internal docs" |
+| **extract-sitemap** | Map links from a page, check accessibility, generate sitemap | "preview extraction", "discover site structure" |
+| **extract-page-shallow** | Extract one page + direct links only (no deep crawl) | "shallow extraction", "one page and its links" |
+| **extract-design-system** | Extract colors, typography, spacing from a site | "extract design", "copy styling", "design tokens" |
 
-</details>
+### Infrastructure & Workflow
 
-<details>
-<summary>⚙️ How Cursor Agents Work</summary>
+| Skill | Purpose | When to Use |
+|-------|---------|-------------|
+| **git-sync** | Safe git sync: push changes, PR workflow, CI setup | "sync to GitHub", "push my changes", "create PR" |
+| **workspace-privacy** | Sanitize workspace for sharing (remove PII) | "prep for sharing", "workspace privacy" |
+| **dev-environment-setup** | One-time setup: Node, Git, Python, MCP, Vercel, Supabase, Docker | "set up dev environment", "bootstrap my laptop" |
 
-### The `@` Syntax
+### Cursor Config
 
-When you type `@filename.md` in Cursor chat, Cursor:
-1. **Reads the file** and treats it as agent instructions
-2. **Executes the agent** using those instructions
-3. **Applies it** to whatever you specify after
+| Skill | Purpose | When to Use |
+|-------|---------|-------------|
+| **context-advisor** | Choose rules vs commands vs skills vs subagents | "should I create a rule or skill?", "best way to provide context" |
+| **sync-helpful-agents-cursor** | Sync workspace .cursor/ to this repo | "sync skills to Helpful Agents", "update public configs" |
 
-### Why Not Copy-Paste?
+---
 
-**Don't do this:**
-```
-You: [Copy entire Debug.md content]
-      Run this on my project
-```
+## Commands
 
-**Do this instead:**
-```
-You: @Debug.md on ./my-project
-```
+Commands are single-purpose actions invoked with `/command-name`. Add context after: `/command-name @filename.md` or describe what to act on.
 
-**Benefits:**
-- ✅ Agent stays in sync (updates automatically)
-- ✅ Less clutter in chat
-- ✅ Cursor can reference the file directly
-- ✅ Easier to discover and reuse agents
+### Documentation Commands
 
-### Targeting Objects
+| Command | Purpose | Usage |
+|---------|---------|-------|
+| **format-doc** | Style normalization only (headings, bullets, spacing). No content edits. | `/format-doc` or `/format-doc @README.md` |
+| **revise-doc** | Lossless distillation for clarity, resequence for flow | `/revise-doc` or `/revise-doc @spec.md` |
+| **optimize-doc** | Light-touch refinement, minimal edits, preserve claims | `/optimize-doc` or `/optimize-doc @doc.md` |
+| **refine-readme** | Turn default README into best-in-class (value prop, quick start, <60 sec to run) | `/refine-readme` on project README |
+| **list-questions** | Extract open questions from a document | `/list-questions` or `/list-questions @doc.md` |
+| **list-conflicts** | Extract conflicting facts from a document | `/list-conflicts` or `/list-conflicts @doc.md` |
 
-After the agent name, specify what to act on:
+---
 
-```
-@Debug.md on ./Allegro              # Run on a folder
-@Cleanup-folder.md on Inspiration/  # Clean up a project
-@Format.md on README.md              # Format a specific file
-@Requirement_Agent.md create PRD for new feature  # Create something new
-```
+## Templates (@-mention .md Files)
 
-### Path Resolution
+Templates live in the repo root. Use `@filename.md` in Cursor chat to load them as context, or copy-paste into your project.
 
-- **Relative paths:** `@Debug.md` (if in Helpful Agents folder)
-- **Absolute paths:** `@Helpful Agents/Debug.md` (from anywhere)
-- **File references:** `@./Debug.md` (explicit relative)
+| File | Purpose | How to Use |
+|------|---------|------------|
+| **Builder_Template.md** | Lightweight prototype-driven brief (vision, goals, problem, scope) | `@Builder_Template.md` when creating a Builder Brief |
+| **PRD_Template.md** | Comprehensive PRD structure (scope, use cases, requirements) | `@PRD_Template.md` when drafting a full PRD |
+| **README-project-template.md** | Generic project README structure (quick start, stack, features) | `@README-project-template.md` when creating a new project README |
+| **generic_cursor_user_rule.md** | Cursor User Rules starter (traceability, docs discipline, git workflow) | Copy into Cursor Settings → User Rules, then customize |
 
-</details>
+---
 
-<details>
-<summary>🔄 Common Workflows</summary>
+## Common Workflows
 
-| Need | Agent Sequence | Example |
-|------|----------------|---------|
-| **New project** | README template → Refine | `@README-project-template.md` then `@README-project-refine-prompt.md` |
-| **Requirements** | Requirement → Critique | `@Requirement_Agent.md create Builder Brief` then `@Critique_Agent.md review` |
-| **Doc cleanup** | Optimize → Revise → Format | `@OptimizeDoc.md` → `@ReviseDoc.md` → `@Format.md` |
-| **Code quality** | Debug audit | `@Debug.md on ./project` |
-| **Doc harmonization** | Cleanup folder | `@Cleanup-folder.md on ./project` |
+| Need | Use |
+|------|-----|
+| **New project** | README template → `/refine-readme` |
+| **Requirements** | `requirement-agent` create Builder Brief → `critique-requirements` review |
+| **Doc cleanup** | `/optimize-doc` → `/revise-doc` → `/format-doc` |
+| **Code quality** | `debug-audit` on project → `codefix` before PR |
+| **Doc harmonization** | `cleanup-docs` on project folder |
+| **Extract from web** | `extract-sitemap` first → `extract-webpage-content` |
 
-</details>
+---
 
-<details>
-<summary>📚 Writing Your Own Agents</summary>
+## Contributing
 
-### Agent Design Principles
-
-1. **Single, clear purpose** — One agent = one job
-2. **Well-scoped** — Clear inputs, outputs, and boundaries
-3. **Self-contained** — All instructions in one file
-4. **Action-oriented** — Tells the AI what to do, not just what to know
-
-### Example Structure
-
-```markdown
-# Agent Name
-
-> **Purpose:** [One sentence]
-> **Usage:** @Agent-Name.md on [target]
-
-## Step 1: [What to do]
-[Clear instructions]
-
-## Step 2: [What to do next]
-[Clear instructions]
-
-## Expected Output
-[What success looks like]
-```
-
-### Testing Your Agent
-
-1. Write the agent file
-2. Test in Cursor: `@YourAgent.md on test-target`
-3. Refine based on results
-4. Share if it's reusable!
-
-</details>
-
-<details>
-<summary>🛡️ Safety & Best Practices</summary>
-
-- ✅ **Review outputs** before committing auto-fixes
-- ✅ **Test on small scope** first (single file/folder)
-- ✅ **Verify git remotes** before pushing
-- ✅ **Check .gitignore** before creating files
-- ❌ **Never commit secrets** or personal info
-- ❌ **Don't run destructive agents** without backups
-
-### Customization
-
-Agents use placeholders you can customize:
-- `<WORKSPACE_PATH>` — Your workspace root
-- `<WORK_USER>` — Your username
-- `{{PLATFORM_NAME}}` — Platform-specific values
-
-Replace these with your actual values when using agents.
-
-</details>
-
-<details>
-<summary>💡 About These Agents</summary>
-
-**What they are:** Generic, reusable AI agents anyone can customize. No personal paths, no hardcoded accounts, no secrets.
-
-**What they're not:** Work-specific patterns from Adobe (those are internal). But I'm always happy to discuss patterns, share learnings, or collaborate on interesting problems.
+Found a bug? Have a better agent? Open an issue or PR on [GitHub](https://github.com/mostly-coherent/Helpful-Agents).
 
 **Philosophy:** Fast time to value. Straight to execution, minimal ceremony, clear examples.
 
-**Contributing:** Found a bug? Have a better agent? Open an issue or PR!
-
-</details>
-
 ---
 
-**Last Updated:** 2025-01-02  
-**Agent Count:** 20  
+**Last Updated:** 2025-02-14  
 **Other Projects:** [github.com/mostly-coherent](https://github.com/mostly-coherent)

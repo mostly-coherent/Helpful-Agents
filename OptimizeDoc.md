@@ -1,2 +1,0 @@
-You have refined this a few times by now. 
-Just do another round of light-touch refinement: minimal edits only—lossless distillation, and micro-resequencing for logical flow if necessary; preserve all claims, tone, and structure. NO new content. 
