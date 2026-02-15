@@ -4,7 +4,7 @@ description: Syncs workspace .cursor/skills and .cursor/commands to Helpful Agen
 ---
 # Sync Helpful Agents Cursor Configs
 
-Mirrors workspace `.cursor/skills/` and `.cursor/commands/` to `Helpful Agents/.cursor/skills/` and `Helpful Agents/.cursor/commands/` for public sharing on GitHub.
+Syncs user-level `~/.cursor/skills/` and workspace `.cursor/skills/` + `.cursor/commands/` to `Helpful Agents/.cursor/` for public sharing on GitHub. Universal skills live at user-level; workspace contributes sync-helpful-agents-cursor and public-only skills.
 
 ## When to Use
 
@@ -20,18 +20,20 @@ Use this skill when:
 
 **Purpose:** Keep public Helpful Agents repo synchronized with actual cursor configurations
 
-**Direction:** One-way sync: Workspace `.cursor/` → `Helpful Agents/.cursor/`
+**Direction:** One-way sync: `~/.cursor/skills/` + workspace `.cursor/` → `Helpful Agents/.cursor/`
 
 **What gets synced:**
 
-- All files in `.cursor/skills/` (skills, references, scripts, assets)
-- All files in `.cursor/commands/` (command markdown files)
+- **Phase 2a:** User-level `~/.cursor/skills/` (universal skills)
+- **Phase 2b:** Workspace `.cursor/skills/` (sync-helpful-agents-cursor; excludes private skills)
+- **Phase 3:** Workspace `.cursor/commands/` (command markdown files)
 
 **What gets excluded:**
 
 - `.DS_Store` files (macOS metadata)
-- Temporary files
-- `git-sync/` skill (contains PII — a separate PII-free public version is maintained directly in Helpful Agents)
+- `git-sync/` (contains PII; symlink to MyPrivatePrompts; public template maintained in Helpful Agents)
+- `update-lenny/` (private skill; symlink to MyPrivatePrompts)
+- `update-lenny.md` from commands (converted to skill; private)
 
 ## Execution Flow
 
@@ -42,7 +44,7 @@ Use this skill when:
 1. Check workspace root exists:
 
    ```bash
-   pwd  # Should be workspace root (Personal Builder Lab or Project Understanding)
+   pwd  # Should be your workspace root
    ```
 2. Verify source directories exist:
 
@@ -62,47 +64,55 @@ Use this skill when:
 - Provide guidance on resolving the issue
 - Do not proceed with sync
 
-### Phase 2: Sync Skills
+### Phase 2a: Sync User-Level Skills
 
 **Command:**
 
 ```bash
-rsync -av --delete --exclude='.DS_Store' --exclude='git-sync/' \
+rsync -av --exclude='.DS_Store' --exclude='.*' \
+  ~/.cursor/skills/ \
+  "Helpful Agents/.cursor/skills/"
+```
+
+**What this does:**
+
+- Copies universal skills from `~/.cursor/skills/` to Helpful Agents
+- No `--delete` — merge only; prevents accidental removal
+- Skips hidden files/dirs
+
+### Phase 2b: Sync Workspace Skills
+
+**Command:**
+
+```bash
+rsync -av --exclude='.DS_Store' --exclude='git-sync' --exclude='git-sync/' --exclude='update-lenny' --exclude='update-lenny/' \
   ".cursor/skills/" \
   "Helpful Agents/.cursor/skills/"
 ```
 
-**Flags explained:**
-
-- `-a`: Archive mode (preserves permissions, timestamps, subdirectories)
-- `-v`: Verbose (shows what's being transferred)
-- `--delete`: Remove files in destination that don't exist in source (true mirror)
-- `--exclude='.DS_Store'`: Skip macOS metadata files
-- `--exclude='git-sync/'`: Skip git-sync skill (contains PII; public version maintained separately)
-
 **What this does:**
 
-- Copies all skill folders and their contents (except git-sync/)
-- Mirrors directory structure exactly
-- Removes any skills in Helpful Agents that were deleted from workspace
-- Preserves all subdirectories (references/, scripts/, assets/)
-- Leaves `Helpful Agents/.cursor/skills/git-sync/` untouched (PII-free public version)
+- Copies workspace public skills (e.g. sync-helpful-agents-cursor)
+- Excludes git-sync and update-lenny (private; symlinks to MyPrivatePrompts)
+- No `--delete` — merge only
 
 ### Phase 3: Sync Commands
 
-**Command:**
+**Commands:**
 
 ```bash
-rsync -av --delete --exclude='.DS_Store' \
+mkdir -p "Helpful Agents/.cursor/commands"
+test -d .cursor/commands && rsync -av --exclude='.DS_Store' --exclude='update-lenny.md' \
   ".cursor/commands/" \
-  "Helpful Agents/.cursor/commands/"
+  "Helpful Agents/.cursor/commands/" || true
 ```
 
 **What this does:**
 
-- Copies all command markdown files
-- Removes any commands in Helpful Agents that were deleted from workspace
-- Ensures exact mirror of commands
+- Ensures Helpful Agents has .cursor/commands/
+- Copies command markdown files from workspace (if dir exists)
+- Excludes update-lenny.md (converted to private skill)
+- No `--delete` — merge only
 
 ### Phase 4: Verify Sync
 
@@ -227,17 +237,18 @@ Solutions:
 
 ### Sync Direction
 
-| Source                  | Destination                               | Direction  |
-| ----------------------- | ----------------------------------------- | ---------- |
-| ✅`.cursor/skills/`   | `Helpful Agents/.cursor/skills/`        | One-way → |
-| ✅`.cursor/commands/` | `Helpful Agents/.cursor/commands/`      | One-way → |
-| ❌ NEVER reverse        | Workspace `.cursor/` is source of truth | Never ←   |
+| Source                       | Destination                    | Direction  |
+| ---------------------------- | ------------------------------ | ---------- |
+| ✅ `~/.cursor/skills/`       | `Helpful Agents/.cursor/skills/` | One-way → |
+| ✅ workspace `.cursor/skills/` | `Helpful Agents/.cursor/skills/` | One-way → |
+| ✅ workspace `.cursor/commands/` | `Helpful Agents/.cursor/commands/` | One-way → |
+| ❌ NEVER reverse             | Merge only, no --delete        | Never ←   |
 
 **Why one-way:**
 
-- Workspace `.cursor/` is the working copy (where you create/edit)
-- Helpful Agents is the publication copy (for GitHub sharing)
-- Prevents accidental overwrites of working configs
+- User-level + workspace = working copy
+- Helpful Agents = publication copy (for GitHub sharing)
+- No --delete on phases — merge only; manual cleanup if retiring a skill
 
 ### After Sync
 
@@ -274,13 +285,14 @@ Solutions:
 
 ### PII-Excluded Skills
 
-Some skills contain personal information (paths, emails, account names) that cannot be shared publicly. These are excluded from the rsync mirror and have a separate PII-free version maintained directly in `Helpful Agents/.cursor/skills/`.
+Some skills contain personal information or are workspace-specific. Excluded from sync:
 
-**Currently excluded:** `git-sync/`
+| Skill         | Reason                         |
+| ------------- | ------------------------------ |
+| `git-sync/`   | PII (paths, emails); symlink to MyPrivatePrompts |
+| `update-lenny/` | Workspace-specific; symlink to MyPrivatePrompts |
 
-**To add more exclusions:** Add `--exclude='skill-name/'` to the rsync command in Phase 2.
-
-**Maintenance:** When updating an excluded skill's workspace version, remember to also update the public version in Helpful Agents manually.
+**git-sync public template:** Maintained in Helpful Agents with placeholders (WORKSPACE_ROOT, etc.). Update manually when logic changes.
 
 ## Integration with Git-Sync
 
@@ -452,8 +464,8 @@ Helpful Agents/
 
 ## Key Principles
 
-1. **One-way sync**: Workspace → Helpful Agents (never reverse)
-2. **True mirror**: `--delete` ensures exact replication
+1. **One-way sync**: User-level + workspace → Helpful Agents (never reverse)
+2. **Merge only**: No --delete; prevents accidental removal of skills
 3. **Pre-push step**: Always sync before pushing Helpful Agents to GitHub
 4. **Review changes**: Always check git diff before committing
 5. **Idempotent**: Safe to run multiple times (no side effects if already synced)

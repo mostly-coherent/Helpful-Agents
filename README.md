@@ -22,7 +22,11 @@
 ### First-Time Setup
 
 1. **Clone or download** this repo
-2. **In Cursor**, reference agents by their file path:
+2. **One-time:** Run `./install.sh` to copy skills and commands to `~/.cursor/` so they work in all projects:
+   ```bash
+   git clone https://github.com/mostly-coherent/Helpful-Agents.git && cd Helpful-Agents && ./install.sh
+   ```
+3. **In Cursor**, reference agents by their file path:
    - `@Helpful Agents/Debug.md` (if outside the folder)
    - `@Debug.md` (if you're already in the Helpful Agents folder)
 3. **Add context** after the agent name:
