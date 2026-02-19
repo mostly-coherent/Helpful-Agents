@@ -74,7 +74,6 @@ Skills are domain-specific workflows. Cursor invokes them when your message matc
 | Skill | Purpose | When to Use |
 |-------|---------|-------------|
 | **context-advisor** | Choose rules vs commands vs skills vs subagents | "should I create a rule or skill?", "best way to provide context" |
-| **sync-helpful-agents-cursor** | Sync workspace .cursor/ to this repo | "sync skills to Helpful Agents", "update public configs" |
 
 ---
 
