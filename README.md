@@ -128,5 +128,5 @@ Found a bug? Have a better agent? Open an issue or PR on [GitHub](https://github
 
 ---
 
-**Last Updated:** 2025-02-14  
+**Last Updated:** 2026-02-14  
 **Other Projects:** [github.com/mostly-coherent](https://github.com/mostly-coherent)
