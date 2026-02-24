@@ -66,6 +66,8 @@ Skills are domain-specific workflows. Cursor invokes them when your message matc
 | Skill | Purpose | When to Use |
 |-------|---------|-------------|
 | **git-sync** | Safe git sync: push changes, PR workflow, CI setup | "sync to GitHub", "push my changes", "create PR" |
+| **sync-cursor-to-repo** | Sync workspace skills/commands to a shared repo for public distribution | "sync skills to repo", "mirror cursor configs" |
+| **update-upstream-fork** | Pull latest from upstream into a fork or cloned repo | "update fork", "pull upstream", "sync from upstream" |
 | **workspace-privacy** | Sanitize workspace for sharing (remove PII) | "prep for sharing", "workspace privacy" |
 | **dev-environment-setup** | One-time setup: Node, Git, Python, MCP, Vercel, Supabase, Docker | "set up dev environment", "bootstrap my laptop" |
 
@@ -128,5 +130,5 @@ Found a bug? Have a better agent? Open an issue or PR on [GitHub](https://github
 
 ---
 
-**Last Updated:** 2026-02-14  
+**Last Updated:** 2026-02-24  
 **Other Projects:** [github.com/mostly-coherent](https://github.com/mostly-coherent)
