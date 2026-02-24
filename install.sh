@@ -17,8 +17,10 @@ if [ -d "$SCRIPT_DIR/.cursor/skills" ]; then
   for skill in "$SCRIPT_DIR"/.cursor/skills/*/; do
     [ -d "$skill" ] || continue
     name=$(basename "$skill")
+    [ -f "$skill/SKILL.md" ] || continue
     rm -rf "$CURSOR_HOME/skills/$name"
-    cp -R "$skill" "$CURSOR_HOME/skills/"
+    mkdir -p "$CURSOR_HOME/skills/$name"
+    cp -R "$skill"/* "$CURSOR_HOME/skills/$name/"
     echo "  ✓ $name"
   done
 fi
