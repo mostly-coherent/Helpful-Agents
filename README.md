@@ -124,10 +124,7 @@ Universal commands available in all workspaces. Use `/command-name` in Cursor ch
 
 | File | Purpose | How to Use |
 |------|---------|------------|
-| **Builder_Template.md** | Lightweight prototype-driven brief | `@Builder_Template.md` |
-| **PRD_Template.md** | Comprehensive PRD structure | `@PRD_Template.md` |
-| **README-project-template.md** | Generic project README structure | `@README-project-template.md` |
-| **generic_cursor_user_rule.md** | Cursor User Rules starter | Copy into Cursor Settings → User Rules |
+| **generic_cursor_user_rule.md** | Cursor User Rules starter | Copy into Cursor Settings → User Rules, then customize |
 
 ---
 
