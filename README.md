@@ -12,7 +12,10 @@
 |------|----------|-------|------------|
 | **User-level skills** | `.cursor/skills/` | All workspaces | Auto-invoke or mention by name |
 | **User-level commands** | `.cursor/commands/` | All workspaces | `/command-name` in Cursor chat |
+| **User-level agents** | `.cursor/agents/` | All workspaces | Cursor Agents panel or `@agent-name` |
 | **Workspace skill templates** | `workspace/skills/` | Current workspace | Customize after install |
+| **Workspace rules** | `workspace/rules/` | Current workspace | Cursor rules (e.g. accountability) |
+| **Workspace templates** | `workspace/templates/` | Workspace root | FOCUS.md, etc. |
 | **Templates** | Root `*.md` files | Any project | `@filename.md` as context |
 | **Install script** | `install.sh` | — | One-time setup after clone |
 
@@ -25,8 +28,8 @@ cd Helpful-Agents
 ```
 
 `install.sh` places configs in two locations:
-- **User-level** (`~/.cursor/`) — skills and commands available in every workspace
-- **Workspace** (parent `../.cursor/`) — workspace-specific skill templates (skipped if already customized)
+- **User-level** (`~/.cursor/`) — skills, commands, and agents available in every workspace
+- **Workspace** (parent folder of Helpful Agents) — skill templates, rules, and `FOCUS.md` (skipped if already customized)
 
 ---
 
@@ -85,6 +88,35 @@ Universal skills available in all Cursor workspaces after install.
 | Skill | Purpose | When to Use |
 |-------|---------|-------------|
 | **context-advisor** | Choose rules vs commands vs skills vs subagents | "should I create a rule or skill?" |
+| **multi-llm-rigorous-analysis** | Rigorous critique of a write-up using multiple LLMs | "rigorous analysis", "critique with Gemini/GPT/Opus/Sonnet" |
+| **accountability-checkin** | Structured check-in against your FOCUS.md plan | "check in", "what should I do next", "am I on track" |
+
+---
+
+## User-Level Agents
+
+Subagents for deep analysis. Invoke via Cursor Agents panel or `@agent-name` with a source file.
+
+| Agent | Model | Purpose |
+|-------|-------|---------|
+| **rigorous-analysis-gemini** | Gemini 3.1 Pro | Rigorous critique with web research from 12 thought-leader sources |
+| **rigorous-analysis-gpt** | GPT 5.3 Codex | Same workflow, GPT perspective |
+| **rigorous-analysis-opus** | Claude Opus | Same workflow, Opus perspective |
+| **rigorous-analysis-sonnet** | Claude Sonnet | Same workflow, Sonnet perspective |
+
+Use when you want a model-specific perspective on a document with theme-guided web research.
+
+---
+
+## Accountability Workflow
+
+The **accountability-checkin** skill + **accountability** rule + **FOCUS.md** template work together:
+
+1. **FOCUS.md** — Your single source of truth for 4 active targets and a 10-week timeline. Lives at workspace root. Fill in your targets, actions, and dates.
+2. **accountability rule** — Surfaces your plan when you drift or ask "what should I work on?" Installed to `.cursor/rules/`.
+3. **accountability-checkin skill** — Runs a structured check-in: reads FOCUS.md, asks what you've done, calls out drift, gives one next action, updates the file. Run `@accountability-checkin` at session start or when you feel yourself drifting.
+
+`install.sh` copies the rule and FOCUS template to your workspace (the folder containing Helpful Agents) — skips if you've already customized them. For best results, clone Helpful Agents into your main project folder so FOCUS.md lives at your workspace root.
 
 ---
 
@@ -132,6 +164,7 @@ Universal commands available in all workspaces. Use `/command-name` in Cursor ch
 
 | Need | Use |
 |------|-----|
+| **Focus check** | `@accountability-checkin` at session start or when drifting |
 | **New project** | README template → `/refine-readme` |
 | **Requirements** | `requirement-agent` → `critique-requirements` |
 | **Doc cleanup** | `/optimize-doc` → `/revise-doc` → `/format-doc` |

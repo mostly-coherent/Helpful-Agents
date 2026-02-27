@@ -1,0 +1,16 @@
+{
+  "models": {
+    "sonnet": "anthropic/claude-sonnet-4-20250514",
+    "opus": "anthropic/claude-opus-4-20250514",
+    "gpt": "openai/gpt-4o",
+    "gemini": "google/gemini-2.0-flash"
+  },
+  "fallback_models": {
+    "sonnet": "anthropic/claude-3-5-sonnet-20241022",
+    "opus": "anthropic/claude-3-opus-20240229",
+    "gpt": "openai/gpt-4o-mini",
+    "gemini": "google/gemini-1.5-pro"
+  },
+  "max_tokens": 16000,
+  "temperature": 0.4
+}

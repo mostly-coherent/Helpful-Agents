@@ -4,17 +4,19 @@
 # Idempotent — safe to re-run.
 #
 # Two installation targets:
-#   User-level   (.cursor/skills + commands)   → ~/.cursor/  (all workspaces)
-#   Workspace    (workspace/skills + commands)  → ./.cursor/  (current workspace only, skip if exists)
+#   User-level   (.cursor/skills + commands + agents)  → ~/.cursor/  (all workspaces)
+#   Workspace    (workspace/skills + commands + rules) → ./.cursor/  (current workspace only, skip if exists)
+#   Workspace    (workspace/templates/FOCUS.md)        → workspace root (skip if exists)
 
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CURSOR_HOME="${CURSOR_HOME:-$HOME/.cursor}"
-WORKSPACE_CURSOR="$(dirname "$SCRIPT_DIR")/.cursor"
+WORKSPACE_ROOT="$(dirname "$SCRIPT_DIR")"
+WORKSPACE_CURSOR="$WORKSPACE_ROOT/.cursor"
 
-mkdir -p "$CURSOR_HOME/skills" "$CURSOR_HOME/commands"
-mkdir -p "$WORKSPACE_CURSOR/skills" "$WORKSPACE_CURSOR/commands"
+mkdir -p "$CURSOR_HOME/skills" "$CURSOR_HOME/commands" "$CURSOR_HOME/agents"
+mkdir -p "$WORKSPACE_CURSOR/skills" "$WORKSPACE_CURSOR/commands" "$WORKSPACE_CURSOR/rules"
 
 echo "Installing Cursor configs from Helpful Agents..."
 echo ""
@@ -43,6 +45,20 @@ if [ -d "$SCRIPT_DIR/.cursor/commands" ]; then
     cp "$cmd" "$CURSOR_HOME/commands/"
     echo "  ✓ $name"
   done
+fi
+
+# ── User-level agents ──────────────────────────────────────
+echo ""
+echo "📦 User-level agents → $CURSOR_HOME/agents/"
+if [ -d "$SCRIPT_DIR/.cursor/agents" ]; then
+  for agent in "$SCRIPT_DIR"/.cursor/agents/*.md; do
+    [ -f "$agent" ] || continue
+    name=$(basename "$agent")
+    cp "$agent" "$CURSOR_HOME/agents/"
+    echo "  ✓ $name"
+  done
+else
+  echo "  (no agents to install)"
 fi
 
 # ── Workspace-level skills (skip if already exists) ────────
@@ -84,6 +100,36 @@ if [ -d "$SCRIPT_DIR/workspace/commands" ]; then
   [ "$count" -eq 0 ] && echo "  (no workspace commands to install)"
 else
   echo "  (no workspace commands to install)"
+fi
+
+# ── Workspace-level rules (skip if already exists) ────────
+echo ""
+echo "📦 Workspace rules → $WORKSPACE_CURSOR/rules/"
+if [ -d "$SCRIPT_DIR/workspace/rules" ]; then
+  for rule in "$SCRIPT_DIR"/workspace/rules/*.mdc; do
+    [ -f "$rule" ] || continue
+    name=$(basename "$rule")
+    if [ -f "$WORKSPACE_CURSOR/rules/$name" ]; then
+      echo "  ⏭ $name (already exists, skipping)"
+    else
+      cp "$rule" "$WORKSPACE_CURSOR/rules/"
+      echo "  ✓ $name"
+    fi
+  done
+else
+  echo "  (no workspace rules to install)"
+fi
+
+# ── Workspace templates (FOCUS.md to workspace root) ───────
+echo ""
+echo "📦 Workspace templates → $WORKSPACE_ROOT/"
+if [ -f "$SCRIPT_DIR/workspace/templates/FOCUS.md" ]; then
+  if [ -f "$WORKSPACE_ROOT/FOCUS.md" ]; then
+    echo "  ⏭ FOCUS.md (already exists, skipping)"
+  else
+    cp "$SCRIPT_DIR/workspace/templates/FOCUS.md" "$WORKSPACE_ROOT/"
+    echo "  ✓ FOCUS.md"
+  fi
 fi
 
 echo ""
