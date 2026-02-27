@@ -4,8 +4,8 @@
 # Idempotent — safe to re-run.
 #
 # Two installation targets:
-#   User-level   (.cursor/skills + commands + agents)  → ~/.cursor/  (all workspaces)
-#   Workspace    (workspace/skills + commands + rules) → ./.cursor/  (current workspace only, skip if exists)
+#   User-level   (.cursor/skills + commands + agents + rules) → ~/.cursor/  (all workspaces)
+#   Workspace    (workspace/skills + commands + rules)        → ./.cursor/  (current workspace only, skip if exists)
 #   Workspace    (workspace/templates/FOCUS.md)        → workspace root (skip if exists)
 
 set -e
@@ -15,7 +15,7 @@ CURSOR_HOME="${CURSOR_HOME:-$HOME/.cursor}"
 WORKSPACE_ROOT="$(dirname "$SCRIPT_DIR")"
 WORKSPACE_CURSOR="$WORKSPACE_ROOT/.cursor"
 
-mkdir -p "$CURSOR_HOME/skills" "$CURSOR_HOME/commands" "$CURSOR_HOME/agents"
+mkdir -p "$CURSOR_HOME/skills" "$CURSOR_HOME/commands" "$CURSOR_HOME/agents" "$CURSOR_HOME/rules"
 mkdir -p "$WORKSPACE_CURSOR/skills" "$WORKSPACE_CURSOR/commands" "$WORKSPACE_CURSOR/rules"
 
 echo "Installing Cursor configs from Helpful Agents..."
@@ -45,6 +45,20 @@ if [ -d "$SCRIPT_DIR/.cursor/commands" ]; then
     cp "$cmd" "$CURSOR_HOME/commands/"
     echo "  ✓ $name"
   done
+fi
+
+# ── User-level rules ───────────────────────────────────────
+echo ""
+echo "📦 User-level rules → $CURSOR_HOME/rules/"
+if [ -d "$SCRIPT_DIR/.cursor/rules" ]; then
+  for rule in "$SCRIPT_DIR"/.cursor/rules/*.mdc; do
+    [ -f "$rule" ] || continue
+    name=$(basename "$rule")
+    cp "$rule" "$CURSOR_HOME/rules/"
+    echo "  ✓ $name"
+  done
+else
+  echo "  (no user-level rules to install)"
 fi
 
 # ── User-level agents ──────────────────────────────────────

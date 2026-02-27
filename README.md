@@ -12,6 +12,7 @@
 |------|----------|-------|------------|
 | **User-level skills** | `.cursor/skills/` | All workspaces | Auto-invoke or mention by name |
 | **User-level commands** | `.cursor/commands/` | All workspaces | `/command-name` in Cursor chat |
+| **User-level rules** | `.cursor/rules/` | All workspaces | Apply intelligently (natural-language triggers) |
 | **User-level agents** | `.cursor/agents/` | All workspaces | Cursor Agents panel or `@agent-name` |
 | **Workspace skill templates** | `workspace/skills/` | Current workspace | Customize after install |
 | **Workspace rules** | `workspace/rules/` | Current workspace | Cursor rules (e.g. accountability) |
@@ -28,8 +29,19 @@ cd Helpful-Agents
 ```
 
 `install.sh` places configs in two locations:
-- **User-level** (`~/.cursor/`) — skills, commands, and agents available in every workspace
+- **User-level** (`~/.cursor/`) — skills, commands, rules, and agents available in every workspace
 - **Workspace** (parent folder of Helpful Agents) — skill templates, rules, and `FOCUS.md` (skipped if already customized)
+
+---
+
+## User-Level Rules
+
+Apply-intelligently rules that activate on natural-language triggers. Installed to `~/.cursor/rules/` (available in all workspaces).
+
+| Rule | Purpose | Trigger Examples |
+|------|---------|------------------|
+| **brainstorm** | Guide idea development through Q&A | "Help me brainstorm", "Let's brainstorm [topic]" |
+| **take-note** | Capture ad-hoc notes to markdown | "Take a note:", "Note:", "Capture this:", "Jot down:" |
 
 ---
 
@@ -138,6 +150,7 @@ Universal commands available in all workspaces. Use `/command-name` in Cursor ch
 
 | Command | Purpose | Usage |
 |---------|---------|-------|
+| **pdf-to-markdown** | Convert PDF to Markdown (Docling) | `/pdf-to-markdown @document.pdf` |
 | **format-doc** | Style normalization (headings, bullets, spacing) | `/format-doc @README.md` |
 | **revise-doc** | Lossless distillation for clarity and flow | `/revise-doc @spec.md` |
 | **optimize-doc** | Light-touch refinement, preserve claims | `/optimize-doc @doc.md` |
@@ -181,5 +194,5 @@ Found a bug? Have a better agent? Open an issue or PR on [GitHub](https://github
 
 ---
 
-**Last Updated:** 2026-02-24
+**Last Updated:** 2026-02-27
 **Other Projects:** [github.com/mostly-coherent](https://github.com/mostly-coherent)
