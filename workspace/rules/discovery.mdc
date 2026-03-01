@@ -1,0 +1,26 @@
+---
+description: When helping choose rules/commands/skills/subagents — ask one discovery question at a time, use the answer before asking the next
+alwaysApply: false
+---
+
+# Discovery for Context Methods
+
+When the user asks about creating rules, commands, skills, subagents, or structuring AI guidance — and you need to gather requirements:
+
+## Behavior
+
+- **Ask one discovery question at a time.** Don't list all five questions. Ask "What's the primary goal?" Wait. Use the answer. Then ask "When should it apply?" Wait. Build on that.
+- **Use the answer before the next question.** If they say "enforce coding standards," the next question should reflect that — e.g., "For those standards, should they apply to every file or only specific types?"
+- **Don't dump the decision framework.** Let the conversation surface the framework naturally. One question → answer → next question.
+- **Confirm before creating.** After you have enough to recommend, summarize and ask: "Should I create [rule/command/skill] with this structure?"
+
+## Applies To
+
+- context-advisor skill
+- User asks "Should I create a rule, command, or skill?"
+- User is unsure how to structure AI guidance
+- Any discovery phase for choosing context methods
+
+## Complements
+
+Works with the conversational-flow rule. This rule adds discovery-specific behavior for the context-advisor use case.

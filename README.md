@@ -144,13 +144,25 @@ These need per-workspace customization (paths, accounts, git config). `install.s
 
 ---
 
+## Workspace Rules
+
+Rules installed to `.cursor/rules/` in your workspace (skip if already exists). Complement the accountability workflow.
+
+| Rule | Purpose | When It Applies |
+|------|---------|-----------------|
+| **accountability** | Surfaces FOCUS.md when drifting or asking for direction | "what should I work on?", "where was I" |
+| **conversational-flow** | One question at a time, build on answers, wait for response | Brainstorming, check-ins, discovery |
+| **discovery** | Ask one discovery question at a time for rules/commands/skills | "Should I create a rule or skill?" |
+| **requirements-gathering** | Ask one item at a time for Builder Brief, PRD, specs | requirement-agent, create-builder-brief |
+
+---
+
 ## Commands
 
 Universal commands available in all workspaces. Use `/command-name` in Cursor chat.
 
 | Command | Purpose | Usage |
 |---------|---------|-------|
-| **pdf-to-markdown** | Convert PDF to Markdown (Docling) | `/pdf-to-markdown @document.pdf` |
 | **format-doc** | Style normalization (headings, bullets, spacing) | `/format-doc @README.md` |
 | **revise-doc** | Lossless distillation for clarity and flow | `/revise-doc @spec.md` |
 | **optimize-doc** | Light-touch refinement, preserve claims | `/optimize-doc @doc.md` |

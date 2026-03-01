@@ -5,8 +5,12 @@
 #
 # Two installation targets:
 #   User-level   (.cursor/skills + commands + agents + rules) → ~/.cursor/  (all workspaces)
-#   Workspace    (workspace/skills + commands + rules)        → ./.cursor/  (current workspace only, skip if exists)
-#   Workspace    (workspace/templates/FOCUS.md)        → workspace root (skip if exists)
+#   Workspace    (workspace/skills + commands + rules + agents) → ./.cursor/  (current workspace only, skip if exists)
+#   Workspace    (workspace/templates/FOCUS.md) → workspace root (skip if exists)
+#
+# PRIVATE EXCLUSION: This repo contains only public-safe configs. Private skills/rules/commands
+# (PII, workspace paths, personal accounts) are never synced here. Maintainer uses sync-helpful-agents-cursor
+# with explicit exclusions before pushing.
 
 set -e
 
@@ -16,7 +20,7 @@ WORKSPACE_ROOT="$(dirname "$SCRIPT_DIR")"
 WORKSPACE_CURSOR="$WORKSPACE_ROOT/.cursor"
 
 mkdir -p "$CURSOR_HOME/skills" "$CURSOR_HOME/commands" "$CURSOR_HOME/agents" "$CURSOR_HOME/rules"
-mkdir -p "$WORKSPACE_CURSOR/skills" "$WORKSPACE_CURSOR/commands" "$WORKSPACE_CURSOR/rules"
+mkdir -p "$WORKSPACE_CURSOR/skills" "$WORKSPACE_CURSOR/commands" "$WORKSPACE_CURSOR/rules" "$WORKSPACE_CURSOR/agents"
 
 echo "Installing Cursor configs from Helpful Agents..."
 echo ""
@@ -132,6 +136,24 @@ if [ -d "$SCRIPT_DIR/workspace/rules" ]; then
   done
 else
   echo "  (no workspace rules to install)"
+fi
+
+# ── Workspace-level agents (skip if already exists) ───────
+echo ""
+echo "📦 Workspace agents → $WORKSPACE_CURSOR/agents/"
+if [ -d "$SCRIPT_DIR/workspace/agents" ]; then
+  for agent in "$SCRIPT_DIR"/workspace/agents/*.md; do
+    [ -f "$agent" ] || continue
+    name=$(basename "$agent")
+    if [ -f "$WORKSPACE_CURSOR/agents/$name" ]; then
+      echo "  ⏭ $name (already exists, skipping)"
+    else
+      cp "$agent" "$WORKSPACE_CURSOR/agents/"
+      echo "  ✓ $name"
+    fi
+  done
+else
+  echo "  (no workspace agents to install)"
 fi
 
 # ── Workspace templates (FOCUS.md to workspace root) ───────

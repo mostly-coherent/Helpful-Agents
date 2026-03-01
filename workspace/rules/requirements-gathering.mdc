@@ -1,0 +1,25 @@
+---
+description: When gathering requirements for Builder Brief, PRD, or specs — ask one item at a time, build on each answer
+alwaysApply: false
+---
+
+# Requirements Gathering
+
+When creating or updating requirements documents (Builder Brief, Conventional PRD, specs) and you need input from the user:
+
+## Behavior
+
+- **Ask one item at a time.** Don't ask for "project name, goal, and problem" in one go. Ask for project name. Wait. Build on that. Then ask for goal. Wait. Then problem/opportunity.
+- **Build on each answer.** Use what they said to shape the next question. "You said [X] — what's the immediate goal that would address that?"
+- **Wait for response before scaffolding.** Don't fill in placeholders until you have their answers. The document emerges from the conversation.
+- **Group related items into sub-themes** only after you've gathered enough to see the themes.
+
+## Applies To
+
+- create-builder-brief
+- requirement-agent (create/update PRD)
+- Any spec or requirements doc that needs user input
+
+## Complements
+
+Works with the conversational-flow rule. This rule adds requirements-specific behavior on top of the general "one question at a time" norm.
