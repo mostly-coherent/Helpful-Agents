@@ -111,12 +111,13 @@ Subagents for deep analysis. Invoke via Cursor Agents panel or `@agent-name` wit
 
 | Agent | Model | Purpose |
 |-------|-------|---------|
+| **company-research** | Inherit | Researches a company comprehensively (business model, products, moats, competitors, risks) |
 | **rigorous-analysis-gemini** | Gemini 3.1 Pro | Rigorous critique with web research from 12 thought-leader sources |
 | **rigorous-analysis-gpt** | GPT 5.3 Codex | Same workflow, GPT perspective |
 | **rigorous-analysis-opus** | Claude Opus | Same workflow, Opus perspective |
 | **rigorous-analysis-sonnet** | Claude Sonnet | Same workflow, Sonnet perspective |
 
-Use when you want a model-specific perspective on a document with theme-guided web research.
+**Pipeline:** `@company-research [Company]` → produces analysis → `@rigorous-analysis-* @research/Company_Analysis.md` for multi-LLM critique.
 
 ---
 
@@ -206,5 +207,5 @@ Found a bug? Have a better agent? Open an issue or PR on [GitHub](https://github
 
 ---
 
-**Last Updated:** 2026-02-27
+**Last Updated:** 2026-03-02
 **Other Projects:** [github.com/mostly-coherent](https://github.com/mostly-coherent)

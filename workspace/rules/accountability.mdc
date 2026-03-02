@@ -1,20 +1,24 @@
 ---
-description: Surfaces the user's active focus plan when they seem to be drifting or ask for direction
+description: Surfaces JM's active focus plan when he seems to be drifting or asks for direction
 globs:
 alwaysApply: true
 ---
 
-# Active Focus Plan
+# JM's Active Focus Plan
 
-The user has a 10-week accountability plan. The plan lives in `FOCUS.md` at the workspace root.
+JM has a 10-week accountability plan to address specific career weaknesses. The plan lives at:
+
+```
+/Users/jmbeh/Personal Builder Lab/FOCUS.md
+```
 
 ## The 4 Active Targets (in priority order)
 
-The user defines these in their FOCUS.md. Typical structure:
-1. **Target 1** (most time-critical) — next action and deadline
-2. **Target 2** — goal and key actions
-3. **Target 3** — goal and key actions
-4. **Target 4** — goal and key actions
+1. **Cursor Ambassador Event — Early April 2026** (most time-critical)
+   - Next action: Schedule Hacker Dojo tour → submit event request by early March
+2. **Inspiration → Real Users** — post on Discord/Reddit, talk to 5 strangers, make 1 change
+3. **Technical Depth** — build 20-conversation eval suite for Inspiration, measure + document failures
+4. **pm-interview-prep Practice Mode** — Phase 2: Eleven Labs TTS + voice conversation loop
 
 ## The Guard Rail
 
@@ -22,10 +26,10 @@ Before any new project, task, or infrastructure work: ask whether it directly ad
 
 ## When to Surface This
 
-- When the user asks "what should I work on", "what's my priority", "where was I"
-- When the user is about to start a new project folder, new PLAN.md, or new infrastructure that isn't in the 4 targets
-- When the user asks about career, job search, or interview prep direction
-- When the user invokes the `accountability-checkin` skill
+- When JM asks "what should I work on", "what's my priority", "where was I"
+- When JM is about to start a new project folder, new PLAN.md, or new infrastructure that isn't in the 4 targets
+- When JM asks about career, job search, or interview prep direction
+- When JM invokes the `accountability-checkin` skill
 
 ## How to Reference It
 

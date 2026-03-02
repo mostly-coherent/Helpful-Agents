@@ -23,31 +23,40 @@ The user will provide a source file path (e.g., `@moat/Adobe_Through_the_Lens_of
 
 Use this list to guide which fetched content is relevant. Do not fetch until you have this.
 
-### Step 1: Web Research (Required, Theme-Guided)
+### Step 1: Web Research (Required, Theme-Guided, Recent Focus)
 
-Fetch content from these 12 sources using `mcp_web_fetch`. Be thorough—fetch the main page of each. If a source has an `/archive` or `/articles` path, fetch that too.
+Research these 12 thought-leader sources extensively. **Focus on content published in the past 12 months.** Don't just skim homepages — actively hunt for recent articles relevant to your Step 0 themes.
 
-**Prioritize extracting content that relates to your Step 0 themes.** When scanning fetched pages, look for articles or posts that discuss: the source's key entities, frameworks, industries, or comparable analyses.
+**For each source, do ALL of the following:**
 
-**URLs to fetch (in order):**
-1. https://www.exponentialview.co/
-2. https://www.ben-evans.com/
-3. https://stratechery.com/
-4. https://importai.substack.com/
-5. https://hannahritchie.substack.com/
-6. https://notboring.co/
-7. https://interconnects.ai/
-8. https://noahpinion.blog/
-9. https://unchartedterritories.tomaspueyo.com/
-10. https://waitbutwhy.com/
-11. https://kk.org/
-12. https://www.citriniresearch.com/
+1. **Fetch the main page** to see recent posts and navigation.
+2. **Fetch the archive/articles page** (`{base_url}/archive`, `{base_url}/articles`, or equivalent).
+3. **Use `WebSearch`** to find theme-relevant articles from the past year. Run searches like:
+   - `site:{domain} [key theme from Step 0]`
+   - `site:{domain} [central entity] 2025 OR 2026`
+   - `site:{domain} [search-relevant term]`
+4. **Fetch the 2-3 most relevant individual articles** found per source using `WebFetch`. Read them fully — don't just note titles.
 
-For each source, also try: `{base_url}/archive` or `{base_url}/articles` where applicable.
+**The 12 sources:**
 
-If a URL fails (404, timeout), skip and continue. Note which were unavailable.
+| # | Source | Domain | Base URL |
+|---|--------|--------|----------|
+| 1 | Exponential View | exponentialview.co | https://www.exponentialview.co/ |
+| 2 | Benedict Evans | ben-evans.com | https://www.ben-evans.com/ |
+| 3 | Stratechery | stratechery.com | https://stratechery.com/ |
+| 4 | Import AI | importai.substack.com | https://importai.substack.com/ |
+| 5 | Hannah Ritchie | hannahritchie.substack.com | https://hannahritchie.substack.com/ |
+| 6 | Not Boring | notboring.co | https://notboring.co/ |
+| 7 | Interconnects | interconnects.ai | https://interconnects.ai/ |
+| 8 | Noahpinion | noahpinion.blog | https://noahpinion.blog/ |
+| 9 | Uncharted Territories | unchartedterritories.tomaspueyo.com | https://unchartedterritories.tomaspueyo.com/ |
+| 10 | Wait But Why | waitbutwhy.com | https://waitbutwhy.com/ |
+| 11 | Kevin Kelly | kk.org | https://kk.org/ |
+| 12 | Citrini Research | citriniresearch.com | https://www.citriniresearch.com/ |
 
-Compile a **Research Summary** of relevant excerpts—content that relates to the themes you extracted in Step 0. Keep provenance: [Source](URL) — excerpt.
+If a URL fails (404, timeout, paywall), skip and continue. Note which were unavailable.
+
+**Compile a Research Summary** with specific excerpts and arguments from recent articles — not just titles. Keep provenance: [Source Name — Article Title](URL) — key argument or excerpt. Prioritize content from the past 12 months that directly relates to your Step 0 themes.
 
 ### Step 2: Style Analysis (Required)
 

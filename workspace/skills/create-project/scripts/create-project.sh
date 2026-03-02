@@ -1,14 +1,14 @@
 #!/bin/bash
 
-# Create a new project with canonical docs and optional Next.js AI scaffolding.
-# Usage: ./create-project.sh my-project-name [--skip-github] [--basic] [--scaffold]
+# Helper script to create a new project in Personal Builder Lab/
+# Usage: ./create-project.sh my-project-name [--skip-github] [--basic]
 #
-# Set GITHUB_USER for repo creation. Use --skip-github for non-interactive (e.g. agent) runs.
+# 🚨 CRITICAL: This is for PERSONAL PROJECTS only
+# - Syncs to: github.com/mostly-coherent (Personal portfolio account)
+# - Use Public GitHub MCP or standard git commands
+# - NEVER use Adobe GitHub (github.com/beh_adobe) or Corp_GitHub MCP
 
 set -e
-
-# Workspace root (where project will be created as subfolder)
-WORKSPACE_ROOT="$(pwd)"
 
 # Parse arguments
 SKIP_GITHUB=false
@@ -36,6 +36,11 @@ for arg in "$@"; do
       ;;
   esac
 done
+
+# Locate workspace root and README template (script lives in .cursor/skills/create-project/scripts/)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+WORKSPACE_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
+README_TEMPLATE_PATH="$WORKSPACE_ROOT/MyPrivatePrompts/Project-README/Project.README.template.md"
 
 if [ -z "$PROJECT_NAME" ]; then
   echo "Usage: ./create-project.sh <project-name> [--skip-github] [--basic] [--scaffold]"
@@ -68,7 +73,7 @@ PROJECT_DIR="$PROJECT_NAME"
 
 # Check if project already exists
 if [ -d "$PROJECT_DIR" ]; then
-  echo "❌ Project '$PROJECT_NAME' already exists in this workspace"
+  echo "❌ Project '$PROJECT_NAME' already exists in Personal Builder Lab/"
   exit 1
 fi
 
@@ -83,8 +88,10 @@ git init
 git branch -M main
 echo "✓ Git initialized (main branch)"
 
-# Create basic README
-if [ "$BASIC_MODE" = true ]; then
+# Create basic README (from shared template when available)
+if [ -f "$README_TEMPLATE_PATH" ]; then
+  sed "s/{{PROJECT_NAME}}/$PROJECT_NAME/g" "$README_TEMPLATE_PATH" > README.md
+elif [ "$BASIC_MODE" = true ]; then
   cat > README.md << EOF
 # $PROJECT_NAME
 
@@ -283,7 +290,7 @@ Next.js 14+ (App Router) with TypeScript (strict mode) and TailwindCSS
 
 ### Development
 \`\`\`bash
-cd $PROJECT_NAME
+cd $WORKSPACE_ROOT/$PROJECT_NAME
 npm run dev          # Start dev server on http://localhost:3000
 npm run build        # Production build
 npm run lint         # ESLint check
@@ -370,7 +377,7 @@ Next.js 14+ (App Router) with AI/conversational features
 
 ### Development
 \`\`\`bash
-cd $PROJECT_NAME
+cd $WORKSPACE_ROOT/$PROJECT_NAME
 npm run dev          # Start dev server on http://localhost:3000
 npm run build        # Production build
 npm run lint         # ESLint check
@@ -689,28 +696,50 @@ else
 fi
 
 # Create GitHub repo
-GITHUB_USER="${GITHUB_USER:-your-username}"
 echo ""
-if [ "$SKIP_GITHUB" = true ] || [ ! -t 0 ]; then
-  echo "⚠️  Skipped GitHub repo creation (--skip-github or non-interactive)"
-  echo "   To create later: gh repo create $GITHUB_USER/$PROJECT_NAME --public --source=. --remote=origin"
-  echo "   Or: git remote add origin git@github.com:$GITHUB_USER/$PROJECT_NAME.git"
+echo "🚨 REMINDER: This will create repo at github.com/mostly-coherent (Personal portfolio account)"
+echo "             Use Public GitHub MCP. NEVER use Adobe credentials or Corp_GitHub MCP."
+echo ""
+if [ "$SKIP_GITHUB" = true ]; then
+  echo "⚠️  Skipped GitHub repo creation (--skip-github flag)"
+  echo "   To create later: git remote add origin git@github.com:mostly-coherent/$PROJECT_NAME.git"
 else
-  echo "Create GitHub repo at github.com/$GITHUB_USER? (y/n)"
-  read -p "> " -n 1 -r
+  read -p "Create GitHub repo at github.com/mostly-coherent now? (y/n) " -n 1 -r
   echo
   if [[ $REPLY =~ ^[Yy]$ ]]; then
+    # Try GitHub CLI first
     if command -v gh &> /dev/null; then
-      gh repo create "$GITHUB_USER/$PROJECT_NAME" --public --source=. --remote=origin 2>/dev/null || {
-        echo "⚠️  Run: gh auth login (if not authenticated)"
-        echo "   Then: git remote add origin git@github.com:$GITHUB_USER/$PROJECT_NAME.git"
-      }
+      gh repo create "mostly-coherent/$PROJECT_NAME" --public --source=. --remote=origin
+      echo "✓ GitHub repo created and remote added (via gh CLI)"
+    # Fallback to API with PAT from .env
+    elif [ -f "../.env" ]; then
+      source ../.env
+      if [ -n "$GITHUB_PAT" ]; then
+        RESPONSE=$(curl -s -X POST \
+          -H "Authorization: token $GITHUB_PAT" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/user/repos \
+          -d "{\"name\":\"$PROJECT_NAME\",\"private\":false}")
+        
+        if echo "$RESPONSE" | grep -q '"clone_url"'; then
+          git remote add origin "git@github.com:mostly-coherent/$PROJECT_NAME.git"
+          echo "✓ GitHub repo created and remote added (via API)"
+        else
+          ERROR=$(echo "$RESPONSE" | grep -o '"message":"[^"]*"' | head -1)
+          echo "❌ Failed to create repo: $ERROR"
+          echo "   Create manually at https://github.com/new"
+        fi
+      else
+        echo "⚠️  GITHUB_PAT not found in .env"
+        echo "   Add remote manually: git remote add origin git@github.com:mostly-coherent/$PROJECT_NAME.git"
+      fi
     else
-      echo "⚠️  Install gh CLI: https://cli.github.com/"
-      echo "   Or add remote manually: git remote add origin git@github.com:$GITHUB_USER/$PROJECT_NAME.git"
+      echo "⚠️  .env file not found"
+      echo "   Add remote manually: git remote add origin git@github.com:mostly-coherent/$PROJECT_NAME.git"
     fi
   else
-    echo "⚠️  Skipped. Create later: git remote add origin git@github.com:$GITHUB_USER/$PROJECT_NAME.git"
+    echo "⚠️  Skipped GitHub repo creation"
+    echo "   To create later: git remote add origin git@github.com:mostly-coherent/$PROJECT_NAME.git"
   fi
 fi
 
