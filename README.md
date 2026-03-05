@@ -186,6 +186,7 @@ Universal commands available in all workspaces. Use `/command-name` in Cursor ch
 | File | Purpose | How to Use |
 |------|---------|------------|
 | **generic_cursor_user_rule.md** | Cursor User Rules starter | Copy into Cursor Settings → User Rules, then customize |
+| **prompt-context-harness.md** | Comparison table: Prompt Engineering vs Context Engineering vs Harness Engineering | `@prompt-context-harness.md` when discussing LLM context strategy or choosing an approach |
 
 ---
 
@@ -210,5 +211,5 @@ Found a bug? Have a better agent? Open an issue or PR on [GitHub](https://github
 
 ---
 
-**Last Updated:** 2026-03-02
+**Last Updated:** 2026-03-04
 **Other Projects:** [github.com/mostly-coherent](https://github.com/mostly-coherent)

@@ -1,0 +1,12 @@
+
+| Dimension            | Prompt Engineering                                       | Context Engineering                                                                 | Harness Engineering                                                                                       |
+| -------------------- | -------------------------------------------------------- | ----------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| **Mental Model**     | What you type determines what you get                    | You pre-build the assets; the LLM uses them as needed                               | Code wraps around the LLM — controlling what goes in and what comes out                                   |
+| **Capabilities**     | Writing instructions and examples directly in the prompt | Building a library of Rules, Commands, Skills and Agents that the LLM can reference | Guardrails (block bad output), Evals (measure quality), Routers (direct requests), Hooks (fire on events) |
+| **Primary Artifact** | The prompt or conversation                               | Rules, Skills, Commands, Agents                                                     | Guardrails, evals, routes, hooks, pipelines                                                               |
+| **Your Role**        | Write it out, every time                                 | Create & curate what goes in the library — / or @ to invoke                          | Define what "good" looks like; Hooks are your no-code entry point; engineers build the rest               |
+| **Scalability**      | Low — every task needs a fresh prompt                    | Medium — assets reuse, but someone has to keep them current                         | High — write it once; one guardrail runs on every request automatically                                   |
+| **Failure Mode**     | Fragile — different wording, different output            | Stale — the library falls out of date and nobody notices until it's wrong           | Rigid — valid responses get blocked, or evals pass the wrong things as good                               |
+| **When to Use**      | One-off tasks, quick exploration, prototyping            | Repeatable workflows, anything a whole team runs                                    | When LLM output does something real — saves data, calls an external service, sends a message              |
+
+
