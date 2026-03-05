@@ -32,6 +32,8 @@ cd Helpful-Agents
 - **User-level** (`~/.cursor/`) — skills, commands, rules, and agents available in every workspace
 - **Workspace** (parent folder of Helpful Agents) — skill templates, rules, and `FOCUS.md` (skipped if already customized)
 
+**Tip:** Clone Helpful Agents into your main project folder so workspace configs land in the right place. For standalone clones, set `WORKSPACE_ROOT=/path/to/your/workspace ./install.sh`.
+
 ---
 
 ## User-Level Rules
@@ -86,6 +88,7 @@ Universal skills available in all Cursor workspaces after install.
 | **update-upstream-fork** | Pull latest from upstream into a fork or cloned repo | "update fork", "pull upstream" |
 | **workspace-privacy** | Sanitize workspace for sharing (remove PII) | "prep for sharing" |
 | **dev-environment-setup** | One-time setup: Node, Git, Python, MCP, Docker | "set up dev environment" |
+| **sync-cursor-to-repo** | Sync cursor configs to a shared repo | "sync skills to repo", "mirror configs" |
 
 ### Knowledge & Analysis
 
@@ -99,7 +102,7 @@ Universal skills available in all Cursor workspaces after install.
 
 | Skill | Purpose | When to Use |
 |-------|---------|-------------|
-| **context-advisor** | Choose rules vs commands vs skills vs subagents | "should I create a rule or skill?" |
+| **context-advisor** | Choose rules vs commands vs skills vs subagents vs Hooks | "should I create a rule or skill?", "gate agent actions" |
 | **multi-llm-rigorous-analysis** | Rigorous critique of a write-up using multiple LLMs | "rigorous analysis", "critique with Gemini/GPT/Opus/Sonnet" |
 | **accountability-checkin** | Structured check-in against your FOCUS.md plan | "check in", "what should I do next", "am I on track" |
 

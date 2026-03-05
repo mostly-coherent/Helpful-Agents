@@ -1,11 +1,11 @@
 ---
 name: context-advisor
-description: Helps decide whether to use rules, commands, skills, subagents, or .md files for providing context to Cursor AI. Use when the user asks about the best way to provide context, mentions rules/commands/skills/subagents, or is unsure how to structure AI guidance.
+description: Helps decide whether to use rules, commands, skills, subagents, .md files, or Hooks for Cursor AI. Use when the user asks about the best way to provide context, mentions rules/commands/skills/subagents/hooks, or needs gating/auditing of agent actions.
 ---
 
 # Context Advisor
 
-Helps you choose the optimal context method for your needs in Cursor. Analyzes requirements and recommends whether to use rules, commands, skills, subagents, or simple .md files.
+Helps you choose the optimal context method for your needs in Cursor. Analyzes requirements and recommends whether to use rules, commands, skills, subagents, .md files, or Hooks (for gating/auditing).
 
 ## When to Use This Skill
 
@@ -14,6 +14,7 @@ Use this skill when:
 - User mentions wanting to provide context but is unsure of the method
 - User asks about differences between context methods
 - User needs guidance on structuring AI instructions
+- User asks about Hooks vs rules/commands/skills, or about gating/auditing agent actions
 
 ## Decision Framework
 
@@ -27,6 +28,7 @@ Ask these questions (use AskQuestion tool if available, otherwise conversational
    - Teach domain-specific knowledge
    - Handle complex, multi-step workflows
    - Provide reference documentation
+   - **Gate, audit, or control** agent actions (block shell/MCP, scan for secrets, run formatters after edits, log usage)
 
 2. **When should it apply?**
    - Always (every conversation)
@@ -48,7 +50,9 @@ Ask these questions (use AskQuestion tool if available, otherwise conversational
 
 ### Step 2: Apply Decision Logic
 
-Apply the decision tree logic:
+**First, check for Hooks use case.** If the need involves gating (block shell/MCP/file reads), auditing (log actions, metrics), scanning for PII/secrets, running formatters after edits, or controlling subagent execution → recommend **Hooks** and point to https://cursor.com/docs/agent/hooks. Context-advisor does not create hooks; advise and link to docs.
+
+Otherwise, apply the decision tree:
 
 **Rules**: Standards/conventions that apply always or intelligently
 **Commands**: Quick, single-purpose actions invoked with `/`
@@ -56,7 +60,7 @@ Apply the decision tree logic:
 **Subagents**: Complex tasks needing context isolation
 **.md + @-mention**: Ad-hoc reference material
 
-For detailed decision tree with all criteria, see [REFERENCE.md](REFERENCE.md) section "Complete Comparison Table" and "When to Use What".
+For detailed decision tree with all criteria, see [REFERENCE.md](REFERENCE.md) section "Complete Comparison Table", "Related Capabilities: Hooks", and "When to Use What".
 
 ### Step 3: Recommend and Explain
 
@@ -350,6 +354,7 @@ When invoked:
 
 | Need | Use This |
 |------|----------|
+| Gate shell/MCP/file reads, audit actions, scan for secrets, run formatters after edits | **Hooks** (see [docs](https://cursor.com/docs/agent/hooks)) |
 | Coding standards, always enforced | Rule (Always Apply) |
 | Domain knowledge, context-dependent | Rule (Intelligently) or Skill |
 | File-specific patterns | Rule (Specific Files with globs) |
@@ -365,6 +370,7 @@ See [REFERENCE.md](REFERENCE.md) for detailed comparison table and examples.
 For detailed examples, see [REFERENCE.md](REFERENCE.md)
 
 Quick reference:
+- **Gate, audit, or control agent actions** → Hooks (docs only; context-advisor does not create)
 - **Enforce coding style** → Rule (Always Apply)
 - **Quick PR workflow** → Command
 - **Domain knowledge with scripts** → Skill
@@ -381,6 +387,7 @@ Quick reference:
 - Subagents: https://cursor.com/docs/context/subagents
 - @-mentions: https://cursor.com/docs/context/mentions
 - Semantic Search: https://cursor.com/docs/context/semantic-search
+- Hooks (related; for gating/auditing): https://cursor.com/docs/agent/hooks
 
 **When creating, verify against documentation for current best practices and any updates.**
 
@@ -407,16 +414,19 @@ Gather requirements using AskQuestion tool if available, otherwise conversationa
 
 ```
 Questions to ask:
-1. What's the primary goal? (enforce standards / quick action / teach domain knowledge / complex workflow / reference)
-2. When should it apply? (always / intelligently / specific files / on demand / manual)
-3. Scope? (project only / all projects / team-wide)
-4. Complexity? (simple instructions / needs examples / needs scripts / multi-step)
-5. Any specific requirements? (file patterns, model selection, readonly, etc.)
+1. What's the primary goal? (enforce standards / quick action / teach domain knowledge / complex workflow / reference / gate-audit-control)
+2. If gate-audit-control: Recommend Hooks—block shell/MCP, audit actions, scan secrets, run formatters after edits. Point to docs; do not create.
+3. When should it apply? (always / intelligently / specific files / on demand / manual)
+4. Scope? (project only / all projects / team-wide)
+5. Complexity? (simple instructions / needs examples / needs scripts / multi-step)
+6. Any specific requirements? (file patterns, model selection, readonly, etc.)
 ```
 
 ### Phase 2: Analyze & Recommend
 
-Based on answers, apply decision logic and provide:
+**If the need is gating, auditing, or programmatic control** (block shell/MCP, scan for secrets, run formatters after edits, log usage): Recommend Hooks. Point to https://cursor.com/docs/agent/hooks. Do not create hooks.json—context-advisor advises only.
+
+Otherwise, apply decision logic and provide:
 1. **Primary recommendation** with clear reasoning
 2. **Alternative approaches** if applicable
 3. **Trade-offs** to consider

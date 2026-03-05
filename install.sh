@@ -16,7 +16,8 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CURSOR_HOME="${CURSOR_HOME:-$HOME/.cursor}"
-WORKSPACE_ROOT="$(dirname "$SCRIPT_DIR")"
+# WORKSPACE_ROOT: parent of Helpful Agents, or set explicitly for standalone clones
+WORKSPACE_ROOT="${WORKSPACE_ROOT:-$(dirname "$SCRIPT_DIR")}"
 WORKSPACE_CURSOR="$WORKSPACE_ROOT/.cursor"
 
 mkdir -p "$CURSOR_HOME/skills" "$CURSOR_HOME/commands" "$CURSOR_HOME/agents" "$CURSOR_HOME/rules"

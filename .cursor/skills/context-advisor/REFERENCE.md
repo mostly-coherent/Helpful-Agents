@@ -18,6 +18,30 @@ Detailed examples and comparison tables for choosing context methods in Cursor.
 | **Team Management** | ✅ Dashboard | ✅ Dashboard | ❌ No | ❌ No | ❌ No |
 | **Best For** | Standards | Quick actions | Workflows | Complex tasks | Ad-hoc reference |
 
+## Related Capabilities: Hooks
+
+**Hooks** (https://cursor.com/docs/agent/hooks) are a separate Cursor feature for programmatic control of the agent loop. They are not context methods—they run scripts at lifecycle events (session start/end, before/after shell, before/after MCP, before read file, after file edit, etc.) and can observe, block, or modify behavior.
+
+### When to Recommend Hooks Instead of Context Methods
+
+Recommend **Hooks** when the user's need involves:
+
+| Use Case | Why Hooks |
+|----------|-----------|
+| **Gate risky operations** | Block or require approval for shell commands, MCP tool calls, or file reads before they execute |
+| **Scan for PII/secrets** | Redact or block sensitive content before it reaches the model (e.g. `beforeReadFile`, `beforeTabFileRead`) |
+| **Audit or analytics** | Log agent actions, tool usage, or session metrics for compliance or observability |
+| **Run formatters after edits** | Post-process agent or Tab edits automatically (e.g. `afterFileEdit`, `afterTabFileEdit`) |
+| **Control subagent execution** | Allow or deny subagent (Task tool) creation based on policy |
+| **Inject context at session start** | Add context via `sessionStart` hook's `additional_context` when programmatic injection is required (Rules are simpler for most cases) |
+
+### Hooks vs Context Methods
+
+- **Context methods** (rules, commands, skills, subagents, .md): Provide information and instructions *to* the model.
+- **Hooks**: Programmatic control *around* the agent loop—gating, auditing, lifecycle.
+
+For most "how do I give the AI guidance?" needs, use Rules/Commands/Skills/Subagents. When the need is gating, auditing, or automation around the loop, recommend Hooks and point to https://cursor.com/docs/agent/hooks.
+
 ## Real-World Examples
 
 ### Example 1: Enforcing TypeScript Conventions
@@ -406,6 +430,9 @@ Quick action instructions
 
 ```
 Start: What's your need?
+│
+├─ Gate, audit, or control agent actions?
+│  └─ Hooks (point to docs; context-advisor does not create)
 │
 ├─ Enforce standards/conventions always?
 │  └─ Rule (Always Apply)
