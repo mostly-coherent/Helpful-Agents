@@ -34,6 +34,26 @@ cd Helpful-Agents
 
 **Tip:** Clone Helpful Agents into your main project folder so workspace configs land in the right place. For standalone clones, set `WORKSPACE_ROOT=/path/to/your/workspace ./install.sh`.
 
+### Hooks (Auto-Trigger Skills)
+
+**What are Hooks?** Cursor's automation layer — triggers skills automatically after file edits, saves, commits, etc. No manual invocation needed.
+
+This repo includes `hooks.json` with three quality checks that auto-run after editing `.md` files:
+
+| Hook | What It Does | Skill Referenced |
+|------|--------------|------------------|
+| **fact-check** | Scans for unverified claims, force-fit jargon, ambiguous phrasing | `fact-check` (public, included) |
+| **detect-ai-slop** | Catches AI-generated patterns, mechanical phrasing | `detect-ai-slop` (private, not included) |
+| **in-my-voice** | Ensures content sounds authentic, not generic AI | `in-my-voice` (private, not included) |
+
+**Graceful degradation:** Hooks for missing skills fail silently — no errors, just skip. You can:
+- Use `fact-check` immediately (public skill included)
+- Add your own `detect-ai-slop` and `in-my-voice` skills if desired
+- Edit `~/.cursor/hooks.json` to remove hooks you don't want
+- Create your own hooks following Cursor's docs: https://cursor.com/docs/agent/hooks
+
+**Installation:** `install.sh` copies `hooks.json` to `~/.cursor/hooks.json` (prompts before overwriting if you already have one).
+
 ---
 
 ## User-Level Rules

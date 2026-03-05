@@ -1,0 +1,55 @@
+{
+  "hooks": [
+    {
+      "name": "fact-check-after-edit",
+      "description": "Runs fact-check skill after markdown files are edited to catch unverified claims, force-fit jargon, and ambiguous phrasing",
+      "trigger": "after_file_edit",
+      "filters": {
+        "file_patterns": ["**/*.md"]
+      },
+      "action": {
+        "type": "invoke_skill",
+        "skill": "fact-check",
+        "pass_file_path": true
+      },
+      "options": {
+        "block_until_complete": true,
+        "show_output": true
+      }
+    },
+    {
+      "name": "detect-ai-slop-after-edit",
+      "description": "Runs detect-ai-slop skill after markdown files are edited to catch AI-generated patterns, mechanical phrasing, and authenticity issues",
+      "trigger": "after_file_edit",
+      "filters": {
+        "file_patterns": ["**/*.md"]
+      },
+      "action": {
+        "type": "invoke_skill",
+        "skill": "detect-ai-slop",
+        "pass_file_path": true
+      },
+      "options": {
+        "block_until_complete": true,
+        "show_output": true
+      }
+    },
+    {
+      "name": "in-my-voice-after-edit",
+      "description": "Runs in-my-voice skill after markdown files are edited to ensure content sounds like JM — warm, human, clear, conversational",
+      "trigger": "after_file_edit",
+      "filters": {
+        "file_patterns": ["**/*.md"]
+      },
+      "action": {
+        "type": "invoke_skill",
+        "skill": "in-my-voice",
+        "pass_file_path": true
+      },
+      "options": {
+        "block_until_complete": true,
+        "show_output": true
+      }
+    }
+  ]
+}

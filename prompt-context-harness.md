@@ -1,8 +1,9 @@
+# The Spectrum of Working with LLMs: Prompt to Harness
 
 | Dimension         | Prompt Engineering                                    | Context Engineering                                                    | Harness Engineering                                                                          |
 | ----------------- | ----------------------------------------------------- | ---------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
 | **Mental Model**  | What you type determines what you get                 | You pre-build the assets; the LLM uses them as needed                  | Code/config wrap around the LLM — controlling what goes in and out                           |
-| **What You Build**| The prompt — instructions and examples written inline | A library of Rules, Commands, Skills, and Agents the LLM can reference | Guardrails, evals, routers, and hooks — the code layer between the LLM and the real world    |
+| **What You Build**| The prompt — instructions and examples (copy-paste) | Rules, Commands, Skills, Agents (may use RAG for retrieval, MCP for tools) | Guardrails, evals (RAG verification), routers, hooks |
 | **Your Role**     | Write it out, every time                              | Create & curate what goes in the library — / or @ to invoke            | Define what "good" looks like; Hooks are your no-code entry point; engineers build the rest  |
 | **When to Use**   | One-off tasks; early exploration before patterns emerge | Team prototyping with shared components; recurring workflows — building a team OS | When LLM output does something real — saves data, updates a record, chats with a customer |
 | **Scalability**   | Low — every task needs a fresh prompt                 | Medium — you reuse the library, but someone has to keep it current     | High — runs every request automatically; you refine, not rebuild                             |

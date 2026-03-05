@@ -80,6 +80,33 @@ else
   echo "  (no agents to install)"
 fi
 
+# ── User-level hooks ───────────────────────────────────────
+echo ""
+echo "📦 User-level hooks → $CURSOR_HOME/hooks.json"
+if [ -f "$SCRIPT_DIR/.cursor/hooks.json" ]; then
+  if [ -f "$CURSOR_HOME/hooks.json" ]; then
+    echo "  ⚠️  hooks.json already exists at $CURSOR_HOME/hooks.json"
+    echo "  The repo's hooks.json references skills (fact-check, detect-ai-slop, in-my-voice)."
+    echo "  Some skills may be private and not included in this repo."
+    echo ""
+    read -p "  Overwrite existing hooks.json? [y/N] " -n 1 -r
+    echo ""
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+      cp "$SCRIPT_DIR/.cursor/hooks.json" "$CURSOR_HOME/hooks.json"
+      echo "  ✓ hooks.json (overwritten)"
+    else
+      echo "  ⏭ hooks.json (keeping existing)"
+    fi
+  else
+    cp "$SCRIPT_DIR/.cursor/hooks.json" "$CURSOR_HOME/hooks.json"
+    echo "  ✓ hooks.json"
+    echo "  Note: hooks.json references skills that may not all be installed."
+    echo "  Hooks fail gracefully if a skill doesn't exist. Edit hooks.json to customize."
+  fi
+else
+  echo "  (no hooks.json to install)"
+fi
+
 # ── Workspace-level skills (skip if already exists) ────────
 echo ""
 echo "📦 Workspace skills → $WORKSPACE_CURSOR/skills/"
