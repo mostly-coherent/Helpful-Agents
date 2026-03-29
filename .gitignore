@@ -1,0 +1,34 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Temporary files
+*.tmp
+*.bak
+*~
+
+# IDE
+.vscode/
+.idea/
+# Cursor IDE files (exclude skills/commands/agents/rules for sharing)
+.cursor/*
+!.cursor/skills/
+!.cursor/commands/
+!.cursor/agents/
+!.cursor/rules/
+!.cursor/skills/**
+!.cursor/commands/**
+!.cursor/agents/**
+!.cursor/rules/**
+
+# Environment (if any test envs are added)
+.env
+.env.local
+.env*.local
+
+# Node (if any tooling is added)
+node_modules/
+
+# Private folders (any folder starting with MyPrivate*)
+MyPrivate*/
