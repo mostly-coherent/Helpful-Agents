@@ -16,11 +16,11 @@ When the user asks about creating rules, commands, skills, subagents, or structu
 
 ## Applies To
 
-- context-advisor skill
+- **context-engineer** skill (or similar “which primitive?” discovery)
 - User asks "Should I create a rule, command, or skill?"
 - User is unsure how to structure AI guidance
 - Any discovery phase for choosing context methods
 
 ## Complements
 
-Works with the conversational-flow rule. This rule adds discovery-specific behavior for the context-advisor use case.
+Works with the conversational-flow rule. Use this rule during the discovery phase before creating rules, skills, commands, or subagents.

@@ -69,7 +69,7 @@ Everything installs to user level (`~/.claude/` and `~/.cursor/`) — available 
 | **take-note** | "Take a note:", "Note:", "Quick note:" | Captures notes, infers location, extracts action items |
 | **cli-nudge** | Task characteristics (automatic) | Detects when CLI would be better, advises once per conversation |
 
-### Skills (29 — includes context-engineer, moat-analysis, etc.)
+### Skills (30 in `.cursor/skills/`; 29 in `.claude/skills/` — `sync-cursor-to-repo` is Cursor-only)
 
 **Code & Development**
 
@@ -123,6 +123,7 @@ Everything installs to user level (`~/.claude/` and `~/.cursor/`) — available 
 | **update-upstream-fork** | Pull latest from upstream into a fork |
 | **workspace-privacy** | Sanitize workspace for sharing (remove PII) |
 | **dev-environment-setup** | One-time setup: Node, Git, Python, MCP, Docker |
+| **sync-cursor-to-repo** | Mirror Cursor user/project configs into a git repo (Cursor install path only) |
 | **context-engineer** | Create the right AI context primitive (rule, skill, agent, hook) by referencing latest Claude Code & Cursor docs |
 
 ### Commands (Invoke with `/command-name`)
@@ -230,4 +231,4 @@ If you're an AI agent exploring this repo on behalf of a user:
 
 ---
 
-**Last Updated:** 2026-03-29 — Workspace templates: `slack-triage` removed + install skip; skill count 29; `moat-analysis` listed.
+**Last Updated:** 2026-03-29 — Removed **`context-advisor`** (use **`context-engineer`**); documented **30 / 29** Cursor vs Claude skill split; `sync-cursor-to-repo` row added to table.

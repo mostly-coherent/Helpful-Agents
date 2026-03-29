@@ -243,6 +243,9 @@ echo "  Cursor      → $CURSOR_HOME"
 echo ""
 
 # ── USER-LEVEL SKILLS ───────────────────────────────────────────────────────
+# `.cursor/skills/` and `.claude/skills/` are installed separately; folder counts
+# may differ (e.g. sync-cursor-to-repo is Cursor-only). Removing a skill from the
+# repo removes it on the next install when the script replaces each skill dir.
 
 echo "📦 User-level skills"
 
