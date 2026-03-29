@@ -1,0 +1,42 @@
+---
+description: Surfaces JM's active focus plan when he seems to be drifting or asks for direction
+globs:
+alwaysApply: true
+---
+
+# JM's Active Focus Plan
+
+JM has a 10-week accountability plan to address specific career weaknesses. The plan lives at:
+
+```
+/Users/jmbeh/Personal Builder Lab/FOCUS.md
+```
+
+## The 4 Active Targets (in priority order)
+
+1. **Cursor Ambassador Event — Early April 2026** (most time-critical)
+   - Next action: Schedule Hacker Dojo tour → submit event request by early March
+2. **Inspiration → Real Users** — post on Discord/Reddit, talk to 5 strangers, make 1 change
+3. **Technical Depth** — build 20-conversation eval suite for Inspiration, measure + document failures
+4. **pm-interview-prep Practice Mode** — Phase 2: Eleven Labs TTS + voice conversation loop
+
+## The Guard Rail
+
+Before any new project, task, or infrastructure work: ask whether it directly advances one of the 4 targets. If not, defer it.
+
+## When to Surface This
+
+- When JM asks "what should I work on", "what's my priority", "where was I"
+- When JM is about to start a new project folder, new PLAN.md, or new infrastructure that isn't in the 4 targets
+- When JM asks about career, job search, or interview prep direction
+- When JM invokes the `accountability-checkin` skill
+
+## How to Reference It
+
+Don't recite the whole plan. Point to it:
+> "Your FOCUS.md has your current priority — want me to run a quick check-in?"
+
+Or if drift is detected:
+> "That looks like it's outside your 4 active targets. Does it advance [Target N]? If not, FOCUS.md says to defer it."
+
+Keep it brief. One observation. No lectures.
