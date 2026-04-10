@@ -44,7 +44,7 @@ These are **not differentiators** — both tools do these well for Builders:
 | Chat with an AI agent about your project | Yes | Yes |
 | Reference files and folders with `@` | Yes — rich autocomplete | Yes — autocomplete in prompt box |
 | Use `/` commands and skills | Yes | Yes |
-| Give the AI standing instructions for your project | `.cursor/rules/` or `AGENTS.md` (legacy: `.cursorrules`) | `CLAUDE.md` |
+| Give the AI standing instructions for your project | `.cursor/rules/*.mdc` or `AGENTS.md` | `CLAUDE.md` |
 | Connect external tools via MCP servers | Yes — `.cursor/mcp.json` (project) or `~/.cursor/mcp.json` (user) | Yes — `.mcp.json` |
 | See what code the AI changed | Inline in editor | Dedicated diff viewer |
 | Work without touching a terminal | Yes | Yes |

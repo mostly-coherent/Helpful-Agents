@@ -67,13 +67,13 @@ Skills live in a `skills/` folder, either at user level or project level. Both t
 
 **Verdict: Same concept, slightly different file names. Easy to maintain one set.**
 
-In Cursor this is `.cursor/rules/` or `AGENTS.md` (project; legacy: `.cursorrules`) or User Rules in Cursor Settings (user). In Claude Code it's `CLAUDE.md` (project) or `~/.claude/CLAUDE.md` (user). Both serve the same purpose.
+In Cursor this is `.cursor/rules/*.mdc` or `AGENTS.md` (project) or User Rules in Cursor Settings (user). Legacy root `.cursorrules` still loads but is deprecated — migrate to `.cursor/rules/`. In Claude Code it's `CLAUDE.md` (project) or `~/.claude/CLAUDE.md` (user). Both serve the same purpose.
 
 Both also support **scoped rules** — instructions that only activate for specific file types or folders.
 
 | | Cursor | Claude Code |
 |---|---|---|
-| Project-level instructions | `.cursor/rules/*.mdc` or `AGENTS.md` (hierarchical, subdirectory-aware; legacy: `.cursorrules`) | `CLAUDE.md` at project root or `.claude/CLAUDE.md` |
+| Project-level instructions | `.cursor/rules/*.mdc` or `AGENTS.md` (hierarchical, subdirectory-aware) | `CLAUDE.md` at project root or `.claude/CLAUDE.md` |
 | User-level instructions | User Rules in Cursor Settings (UI) — not file-based | `~/.claude/CLAUDE.md` (file-based) |
 | Org-level instructions | Team Rules via dashboard (Team/Enterprise). "Enforce" option = mandatory | Managed policy CLAUDE.md (IT-deployed, cannot be excluded via `claudeMdExcludes`) |
 | Scoped rules — project | `.cursor/rules/*.mdc` with `globs:` frontmatter | `.claude/rules/*.md` with `paths:` frontmatter |
@@ -271,7 +271,7 @@ Common issues when setting up or migrating primitives between the two tools.
 | User-level skill only works in one project | Accidentally placed in `.claude/skills/` instead of `~/.claude/skills/` | Move to user-level directory |
 | Cursor User Rules missing after migration | Rules live in Cursor Settings UI, not files | Manually export/transcribe to `~/.claude/CLAUDE.md` |
 | `globs:` rules don't work in Claude Code | Wrong frontmatter key | Claude Code uses `paths:`, not `globs:`. Convert syntax |
-| Old `.cursorrules` file ignored | Deprecated in favor of `.cursor/rules/` | Migrate to `.cursor/rules/*.mdc` files. Cursor still reads `.cursorrules` but it's legacy |
+| Legacy `.cursorrules` at repo root | Deprecated in favor of `.cursor/rules/*.mdc` | Move content into `.cursor/rules/` with frontmatter (`alwaysApply`, `description`, `globs`). Remove `.cursorrules` when done |
 
 ---
 
@@ -300,7 +300,7 @@ IMPORTANT: Mirror the level. User-level Cursor config migrates to ~/.claude/. Pr
    - Consider migrating to .claude/skills/ for full feature support (frontmatter, supporting files)
 
 3. STANDING INSTRUCTIONS
-   - Project: read .cursor/rules/, AGENTS.md, and .cursorrules (legacy). If CLAUDE.md doesn't exist in the project root, create it with the merged content. If it does exist, compare and merge anything missing. For file-scoped rules with globs:, create matching .claude/rules/ files with paths: frontmatter.
+   - Project: read `.cursor/rules/*.mdc`, AGENTS.md, and legacy `.cursorrules` if present. If CLAUDE.md doesn't exist in the project root, create it with the merged content. If it does exist, compare and merge anything missing. For file-scoped rules with globs:, create matching .claude/rules/ files with paths: frontmatter.
    - User: Cursor User Rules live in Cursor Settings (UI), not in a folder. Export or transcribe them manually. If ~/.claude/CLAUDE.md doesn't exist, create it. If it does, merge in anything missing. Target < 200 lines.
 
 4. SUBAGENTS
